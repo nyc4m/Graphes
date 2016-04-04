@@ -33,9 +33,9 @@ public class SpaceConquest {
     
     public static void main(String[] args) {
         //on cree la partie
-        partie = new Partie(5);
+        partie = new Partie(2);
         
-        //ajout des éléments clé de la partie
+        /*//ajout des éléments clé de la partie
         partie.placerLicoLand(2, 2);
         partie.placerLicoShip(5, 5);
         partie.placerZombificator(10, 3);
@@ -47,8 +47,10 @@ public class SpaceConquest {
         partie.placerObjetCeleste(new Asteroide(), 5, 3);
                 
         //on definit le mode de jeu
-        partie.setMode(Mode.manuel);
+        partie.setMode(Mode.manuel);*/
         //on lance l'IHM
+        Graphe grille = partie.getCarte().getGrapheGrille();
+        System.out.println(grille);
         partie.start();
     }
     
