@@ -20,6 +20,10 @@ public class Carte {
     private HashMap<Couple, Case> cases;                                         //listes des cases
     private Couple caseSelectionnee;                                            //case actuellement sélectionnée par le joueur
     private Graphe graphe;
+    /**
+     * Stocke les coordonnées du soleil pour en bannir l'accès
+     */
+    private Couple soleil;
 
     //Constructeur
     public Carte(int _taille) {
@@ -54,7 +58,11 @@ public class Carte {
     public void addObjetCeleste(ObjetCeleste obj, int i, int j) {
         this.getCase(i, j).addObjetCeleste(obj);
         if (obj != null) {
-            obj.setPosition(new Couple(i, j));
+            Couple c = new Couple(i, j);
+            if(obj.getType().equals("etoile")){
+                soleil = c;
+            }
+            obj.setPosition(c);
         }
     }
 
@@ -192,5 +200,12 @@ public class Carte {
             }
         }
         return this.graphe;        
+    }
+/**
+ * Permet d'obtenir la position du soleil
+ * @return Retourne un couple contenant les coordonnées du soleil
+ */
+    public Couple getSoleil() {
+        return soleil;
     }
 }
