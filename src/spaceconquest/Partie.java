@@ -32,7 +32,7 @@ public class Partie {
         this.tour = Race.Licorne;
         this.mode = Mode.manuel;
         this.carte = new Carte(taille);
-        
+                
         this.LicoLand = null;
         this.LicoShip = null;
         this.Zombificator = null;
@@ -104,4 +104,5 @@ public class Partie {
         //lancement de l'IHM
         this.fenetre = new Fenetre(this.carte);
     }
+    
 }

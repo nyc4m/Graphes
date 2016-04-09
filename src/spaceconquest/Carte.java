@@ -3,6 +3,8 @@
  */
 package spaceconquest;
 
+
+import java.awt.Color;
 import java.util.HashMap;
 import spaceconquest.Map.Case;
 import spaceconquest.Map.Couleur;
@@ -208,4 +210,23 @@ public class Carte {
     public Couple getSoleil() {
         return soleil;
     }
+    /**
+     * Permet de colorer tout la carte en blanc
+     */
+    public void effacerColoration(){
+        
+       
+      for (int i = 1; i <= 3 *this.taille; i++) { //parcour des cases
+      for (int j = 1; j <= this.taille; j++) {        
+              
+        Couple c =new Couple(i,j);   //représente la case
+                      
+        this.getCase(c).setCouleur(Couleur.Blanc); //On colorie la case en blanc
+                
+        }      
+        }
+        }
+       
+    
+    
 }
