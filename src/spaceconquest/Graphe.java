@@ -14,20 +14,20 @@ import spaceconquest.Map.Couple;
 public class Graphe {
     private int nbSommet;
     private HashMap<Couple,Integer> matrice;
-    private Boolean orienté;
-    
+    private Boolean oriente;
+
     //constructeur
     public Graphe(int n) {
         this.nbSommet = n;
         this.matrice = new HashMap<>();
-        this.orienté = false;
+        this.oriente = false;
     }
-    
-    //renvoie le nombre de sommet du graphe    
+
+    //renvoie le nombre de sommet du graphe
     public int getNbSommet() {
         return this.nbSommet;
     }
-    
+
     //*************** gestion de la matrice d'adjacence ***********************
     //Modifie la valeur (i,j) de la matrice d'adjacence du graphe
     public void modifierMatrice(int i,int j,int valeur) {
@@ -43,7 +43,7 @@ public class Graphe {
             this.matrice.put(c, valeur);
         }
     }
-    
+
     //renvoie la valeur du coefficient (i,j) de la matrice d'adjacence (0 par défaut)
     public int getMatrice(int i,int j) {
         if(i<=0 || j<=0) {
@@ -60,12 +60,12 @@ public class Graphe {
         }
         return 0;
     }
-    
+
     //renvoie l'orientation
     public boolean getOrientation() {
-        return this.orienté;
+        return this.oriente;
     }
-    
+
     //affiche la matrice d'adjaceance
     @Override
     public String toString() {
@@ -90,7 +90,7 @@ public class Graphe {
         ret += "</center></html>";
         return ret;
     }
-    
-    
+
+
     //
 }
