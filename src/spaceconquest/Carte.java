@@ -22,6 +22,7 @@ private int taille;                                                             
 private HashMap<Couple, Case> cases;                                             //listes des cases
 private Couple caseSelectionnee;                                                //case actuellement sélectionnée par le joueur
 private Graphe graphe;
+private Graphe grapheZombie;
 /**
  * Stocke les coordonnées du soleil pour en bannir l'accès
  */
@@ -34,11 +35,12 @@ public Carte(int _taille) {
         //initialisation de la map vide
         for (int i = 1; i <= 3 * _taille; i++) {
                 for (int j = 1; j <= _taille; j++) {
-                        this.cases.put(new Couple(i, j), new Case());
+                    this.cases.put(new Couple(i, j), new Case());
                 }
         }
         this.caseSelectionnee = null;
         this.graphe = new Graphe(this.taille*3*this.taille);
+        this.grapheZombie = this.graphe;
 }
 
 //getteur de la taille de la map
@@ -226,7 +228,4 @@ public void effacerColoration(){
                 }
         }
 }
-
-
-
 }

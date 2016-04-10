@@ -10,10 +10,10 @@ import spaceconquest.Map.Couple;
  *
  * @author simonetma
  */
-
 public class Graphe {
+
     private int nbSommet;
-    private HashMap<Couple,Integer> matrice;
+    private HashMap<Couple, Integer> matrice;
     private Boolean oriente;
 
     //constructeur
@@ -30,31 +30,33 @@ public class Graphe {
 
     //*************** gestion de la matrice d'adjacence ***********************
     //Modifie la valeur (i,j) de la matrice d'adjacence du graphe
-    public void modifierMatrice(int i,int j,int valeur) {
-        if(i<=0 || j<=0) {
-            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient ("+i+","+j+") !");
-        }
-        else if(i>this.nbSommet || j>this.nbSommet) {
-            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient ("+i+","+j+") !");
-        }
-        else
-        {
-            Couple c = new Couple(i,j);
+    public void modifierMatrice(int i, int j, int valeur) {
+        if (i <= 0 || j <= 0) {
+            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient (" + i + "," + j + ") !");
+        } else if (i > this.nbSommet || j > this.nbSommet) {
+            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient (" + i + "," + j + ") !");
+        } else {
+            Couple c = new Couple(i, j);
             this.matrice.put(c, valeur);
         }
     }
 
+    public void ajouterArc(int i, int j, int valeur) {
+        modifierMatrice(i, j, valeur);
+        if (!this.oriente) {
+            modifierMatrice(j, i, valeur);
+        }
+    }
+
     //renvoie la valeur du coefficient (i,j) de la matrice d'adjacence (0 par défaut)
-    public int getMatrice(int i,int j) {
-        if(i<=0 || j<=0) {
-            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient ("+i+","+j+") !");
-        }
-        else if(i>this.nbSommet || j>this.nbSommet) {
-            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient ("+i+","+j+") !");
-        }
-        else {
-            Couple c = new Couple(i,j);
-            if(this.matrice.containsKey(c)) {
+    public int getMatrice(int i, int j) {
+        if (i <= 0 || j <= 0) {
+            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient (" + i + "," + j + ") !");
+        } else if (i > this.nbSommet || j > this.nbSommet) {
+            System.err.println("Erreur ! La matrice d'adjacence ne possède pas de coefficient (" + i + "," + j + ") !");
+        } else {
+            Couple c = new Couple(i, j);
+            if (this.matrice.containsKey(c)) {
                 return this.matrice.get(c);
             }
         }
@@ -70,27 +72,25 @@ public class Graphe {
     @Override
     public String toString() {
         String ret = "<html><center>Matrice du graphe :<br><br>";
-        for(int i=1;i<=this.nbSommet;i++) {
-            for(int j=1;j<=this.nbSommet;j++) {
-                Couple c = new Couple(i,j);
-                if(this.matrice.containsKey(c)) {
+        for (int i = 1; i <= this.nbSommet; i++) {
+            for (int j = 1; j <= this.nbSommet; j++) {
+                Couple c = new Couple(i, j);
+                if (this.matrice.containsKey(c)) {
                     ret += this.matrice.get(c);
-                }
-                else {
+                } else {
                     ret += "0";
                 }
-                if(j<this.nbSommet) {
-                    ret+= " ";
+                if (j < this.nbSommet) {
+                    ret += " ";
                 }
             }
-            if(i<this.nbSommet) {
-                ret+="<br>";
+            if (i < this.nbSommet) {
+                ret += "<br>";
             }
         }
         ret += "</center></html>";
         return ret;
     }
-
 
     //
 }
