@@ -120,88 +120,22 @@ public void selectionCase(Couple c) {
 }
 
 /**
- * Graphe à découper en plusieurs sous-fonction, parce que sérieux c'est dégueulasse :)
+ * 
  * @return le graphe modélisant la carte
  */
 public Graphe getGrapheGrille(){
-        int n = this.getTaille();
-        for(int i = 1; i <= 3*n; i++) {
-                for(int j = 1; j <= n; j++) {
-                        if(n%2 == 0) { //si la taille de la grille est paire
-                                if((i == 3*n-1) && (j == n)) { //la fichtre case du coin en bas à droite relié à une seule case
-                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                }
-                                else {
-                                        if((j == 1) && (i%2 == 0) && (i != 3*n)) { //relier 2 cases + case à gauche (que des lignes paires) et sauf le coin bas gauche
-                                                this.graphe.modifierMatrice(n*(i-1)+j,n*i+j, 1);
-                                                this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                        }
-                                        else {
-                                                if((j == n) && (i%2 == 1)) {//relier 2 cases + case à droite (sans la case du coin bas droit
-                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                }
-                                                else{
-                                                        if(i == 3*n-1) { //relier 2 cases + cases du bas + cases sur ligne impaire
-                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j+1, 1);
-                                                        }
-                                                        else{
-                                                                if((i%2 == 0) && (i != 3*n)) { //relier 3 cases + ligne paire
-                                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j-1, 1);
-                                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                                }
-                                                                else{
-                                                                        if(i%2 == 1) { //relier 3 cases + ligne impaire
-                                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j+1, 1);
-                                                                        }
-                                                                }
-                                                        }
-                                                }
-                                        }
-                                }
+        int n = this.graphe.getNbSommet();
+        for(int i = 1; i <= n; i++) {
+                for(int j = 1; j <= this.getTaille(); j++) {
+                     if (i+n*2 <= n){
+                         this.graphe.ajouterArc(i, i+n*2, 1);
+                     }
+                     
+                     if(i+this.getTaille() <= n){
+                         this.graphe.ajouterArc(i, i+this.getTaille(), 1);
+                     }
+                    
                         }
-                        else { //si elle est impaire
-                                if((i == 3*n-1) && (j == 1)) { //la fichtre case du coin en bas à gauche relié à une seule case
-                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                }
-                                else {
-                                        if((j == 1) && (i%2 == 0)) { //relier 2 cases + case à gauche (que des lignes paires) et sauf le coin bas gauche
-                                                this.graphe.modifierMatrice(n*(i-1)+j,n*i+j, 1);
-                                                this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                        }
-                                        else {
-                                                if((j == n) && (i%2 == 1) && (i != 3*n)) {//relier 2 cases + case à droite (sans la case du coin bas droit déja traitée)
-                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                }
-                                                else{
-                                                        if(i == 3*n-1) { //relier 2 cases + cases du bas + cases sur ligne impaire
-                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j-1, 1);
-                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                        }
-                                                        else{
-                                                                if((i%2 == 0) && (i != 3*n)) { //relier 3 cases + ligne paire
-                                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j-1, 1);
-                                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                                                        this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                                }
-                                                                else{
-                                                                        if((i%2 == 1) && (i != 3*n)) { //relier 3 cases + ligne impaire
-                                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j, 1);
-                                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*(i+1)+j, 1);
-                                                                                this.graphe.modifierMatrice(n*(i-1)+j, n*i+j+1, 1);
-                                                                        }
-                                                                }
-                                                        }
-                                                }
-                                        }
-                                }
-                        }
-                }
         }
         return this.graphe;
 }
