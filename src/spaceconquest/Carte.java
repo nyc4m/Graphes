@@ -98,7 +98,8 @@ public class Carte {
             this.getCase(c).setCouleur(Couleur.Blanc);
             this.caseSelectionnee = null;
         } else //si une case avait déja été sélectionnée
-         if (this.caseSelectionnee != null) {
+        {
+            if (this.caseSelectionnee != null) {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
                 this.BougerVaisseau(this.caseSelectionnee, c);
@@ -109,17 +110,22 @@ public class Carte {
                 SpaceConquest.tourSuivant();
             } else //si aucune case n'avait été selectionné
             //on vérifie que la case nouvellement sélectionné contient un vaisseau du joueur en cours
-             if (this.getCase(c).getVaisseau() != null) {
+            {
+                if (this.getCase(c).getVaisseau() != null) {
                     if (this.getCase(c).getVaisseau().getRace() == SpaceConquest.getTour()) {
                         //on selectionne la case
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
                     }
                 }
+            }
+        }
     }
 
     /**
      * Methode definissant le graphe de la carte
+     * Pour ce faire, on utilise une double boucle et une variable rédéfinissant la position à chaque tour de la deuxième boucle.
+     * Trois liaisons sont à réaliser : position + n* 2; position + n; et suivant si n est pair ou impair, position + n -1 ou position + n +1
      *
      *
      */
@@ -139,23 +145,18 @@ public class Carte {
                 }
 
                 if (i % 2 != 0) {                                               //On distingue deux cas, celui ou le numéro de la ligne est paire, et celui où il est impaire.
-                    if ((position + n + 1 <= nbSommet) && (j<n)) {                         //On remarque que lorsque le numéro est paire, la position doit être reliée à :
+                    if ((position + n + 1 <= nbSommet) && (j < n)) {                         //On remarque que lorsque le numéro est paire, la position doit être reliée à :
                         this.graphe.ajouterArc(position, position + n + 1, 1);   //position+t-1 et position+t
-                                                                                //sinon elle doit être reliée à : 
+                                                                                            //sinon elle doit être reliée à : 
                                                                                 //position+taille et position + taille +1
                     }
-
-                    if ((position + n - 1 <= nbSommet) && (j > n)) {
+                    } else if (position + n - 1 <= nbSommet && (j > 1 && j <= n)) {
                         this.graphe.ajouterArc(position, position + n - 1, 1);
                     }
                 }
             }
 
         }
-    }
-
-    
-
     
 
     public Graphe getGrapheGrille() {
