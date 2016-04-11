@@ -39,7 +39,7 @@ public class Carte {
         }
         this.caseSelectionnee = null;
         this.setGrapheGrille();
-        this.grapheZombie = this.graphe;
+        this.setGrapheZombie();
     }
 
 //getteur de la taille de la map
@@ -62,8 +62,9 @@ public class Carte {
         this.getCase(i, j).addObjetCeleste(obj);
         if (obj != null) {
             Couple c = new Couple(i, j);
-            if (obj.getType().equals("etoile")) {
+            if (obj.getType().equals("etoile")) {              
                 soleil = c;
+                this.setGrapheZombie();
             }
             obj.setPosition(c);
         }
@@ -123,44 +124,78 @@ public class Carte {
     }
 
     /**
-     * Methode definissant le graphe de la carte
-     * Pour ce faire, on utilise une double boucle et une variable rédéfinissant la position à chaque tour de la deuxième boucle.
-     * Trois liaisons sont à réaliser : position + n* 2; position + n; et suivant si n est pair ou impair, position + n -1 ou position + n +1
+     * Methode definissant le graphe général de la carte Pour ce faire, on utilise une
+     * double boucle et une variable rédéfinissant la position à chaque tour de
+     * la deuxième boucle. Trois liaisons sont à réaliser : position + n* 2;
+     * position + n; et suivant si n est pair ou impair, position + n -1 ou
+     * position + n +1
      *
      *
      */
-    public void setGrapheGrille() {
-        this.graphe = new Graphe(this.taille * 3 * this.taille);
-        int nbSommet = this.graphe.getNbSommet();
+    public Graphe setGraphe(int taille) {
+        Graphe graphe = new Graphe(taille);
+        int nbSommet = graphe.getNbSommet();
         int n = this.taille;
         for (int i = 1; i <= nbSommet; i++) { //Parcours des lignes
             for (int j = 1; j <= n; j++) { //parcours des colonnes
                 int position = j + (n * i) - n; //à chaque parcours de colonne, la position est redéfinie grâce à cette formule
                 if (position + n * 2 <= nbSommet) { //On test que le sommet existe
-                    this.graphe.ajouterArc(position, position + n * 2, 1);
+                    graphe.ajouterArc(position, position + n * 2, 1);
 
                 }
                 if (position + n <= nbSommet) {
-                    this.graphe.ajouterArc(position, position + n, 1);
+                    graphe.ajouterArc(position, position + n, 1);
                 }
 
                 if (i % 2 != 0) {                                               //On distingue deux cas, celui ou le numéro de la ligne est paire, et celui où il est impaire.
                     if ((position + n + 1 <= nbSommet) && (j < n)) {                         //On remarque que lorsque le numéro est paire, la position doit être reliée à :
-                        this.graphe.ajouterArc(position, position + n + 1, 1);   //position+t-1 et position+t
-                                                                                            //sinon elle doit être reliée à : 
-                                                                                //position+taille et position + taille +1
+                        graphe.ajouterArc(position, position + n + 1, 1);   //position+t-1 et position+t
+                        //sinon elle doit être reliée à : 
+                        //position+taille et position + taille +1
                     }
-                    } else if (position + n - 1 <= nbSommet && (j > 1 && j <= n)) {
-                        this.graphe.ajouterArc(position, position + n - 1, 1);
-                    }
+                } else if (position + n - 1 <= nbSommet && (j > 1 && j <= n)) {
+                    graphe.ajouterArc(position, position + n - 1, 1);
                 }
+            }
+        }
+        return graphe;
+    }
+/**
+ * Méthode definissant le graphe de la carte (qui correspond au graphe général
+ */
+    public void setGrapheGrille() {
+        this.graphe = this.setGraphe(this.taille * this.taille * 3);
+    }
+/**
+ * Méthode retournant le graphe de la carte
+ * @return Retourne le graphe de la carte avec le type Graphe
+ */
+    public Graphe getGrapheGrille() {
+        return this.graphe;
+    }
+/**
+ * Methode permettant de définir le graphe des zombies.
+ * Ce graphe est équivalant au graphe de la carte, à ceci prêt que la case contenant le soleil n'est connectée à aucune autre
+ * (cela correspond à une ligne et une colonne de zero aux coordonnées du soleil) 
+ */
+    public void setGrapheZombie() {
+
+        this.grapheZombie = this.setGraphe(this.taille * this.taille * 3);
+        if (this.soleil != null) {
+            int _soleil = this.soleil.getY()+(this.soleil.getX()*this.taille)-this.taille;
+            for (int i = 1; i <= this.taille*3*this.taille; i++) {
+                this.grapheZombie.modifierMatrice(_soleil, i, 0);
+                this.grapheZombie.modifierMatrice(i, _soleil, 0);
             }
 
         }
-    
-
-    public Graphe getGrapheGrille() {
-        return this.graphe;
+    }
+/**
+ * Permet de d'obtenir le graphe des zombies
+ * @return Retourne le graphe des zombies grâce au type Graphe
+ */
+    public Graphe getGrapheZombie() {
+        return this.grapheZombie;
     }
 
     /**
