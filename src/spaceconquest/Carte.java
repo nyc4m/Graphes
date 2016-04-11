@@ -39,7 +39,7 @@ public class Carte {
         }
         this.caseSelectionnee = null;
         this.setGrapheGrille();
-        this.grapheZombie = this.graphe;
+        this.setGrapheZombie();
     }
 
 //getteur de la taille de la map
@@ -62,8 +62,9 @@ public class Carte {
         this.getCase(i, j).addObjetCeleste(obj);
         if (obj != null) {
             Couple c = new Couple(i, j);
-            if (obj.getType().equals("etoile")) {
+            if (obj.getType().equals("etoile")) {              
                 soleil = c;
+                this.setGrapheZombie();
             }
             obj.setPosition(c);
         }
@@ -98,7 +99,8 @@ public class Carte {
             this.getCase(c).setCouleur(Couleur.Blanc);
             this.caseSelectionnee = null;
         } else //si une case avait déja été sélectionnée
-         if (this.caseSelectionnee != null) {
+        {
+            if (this.caseSelectionnee != null) {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
                 this.BougerVaisseau(this.caseSelectionnee, c);
@@ -109,17 +111,20 @@ public class Carte {
                 SpaceConquest.tourSuivant();
             } else //si aucune case n'avait été selectionné
             //on vérifie que la case nouvellement sélectionné contient un vaisseau du joueur en cours
-             if (this.getCase(c).getVaisseau() != null) {
+            {
+                if (this.getCase(c).getVaisseau() != null) {
                     if (this.getCase(c).getVaisseau().getRace() == SpaceConquest.getTour()) {
                         //on selectionne la case
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
                     }
                 }
+            }
+        }
     }
 
     /**
-     * Methode definissant le graphe de la carte Pour ce faire, on utilise une
+     * Methode definissant le graphe général de la carte Pour ce faire, on utilise une
      * double boucle et une variable rédéfinissant la position à chaque tour de
      * la deuxième boucle. Trois liaisons sont à réaliser : position + n* 2;
      * position + n; et suivant si n est pair ou impair, position + n -1 ou
@@ -145,8 +150,8 @@ public class Carte {
                 if (i % 2 != 0) {                                               //On distingue deux cas, celui ou le numéro de la ligne est paire, et celui où il est impaire.
                     if ((position + n + 1 <= nbSommet) && (j < n)) {                         //On remarque que lorsque le numéro est paire, la position doit être reliée à :
                         graphe.ajouterArc(position, position + n + 1, 1);   //position+t-1 et position+t
-                                                                            //sinon elle doit être reliée à : 
-                                                                                //position+taille et position + taille +1
+                        //sinon elle doit être reliée à : 
+                        //position+taille et position + taille +1
                     }
                 } else if (position + n - 1 <= nbSommet && (j > 1 && j <= n)) {
                     graphe.ajouterArc(position, position + n - 1, 1);
@@ -155,12 +160,42 @@ public class Carte {
         }
         return graphe;
     }
-
-    public void setGrapheGrille(){
-        this.graphe = this.setGraphe(this.taille*this.taille*3);
+/**
+ * Méthode definissant le graphe de la carte (qui correspond au graphe général
+ */
+    public void setGrapheGrille() {
+        this.graphe = this.setGraphe(this.taille * this.taille * 3);
     }
+/**
+ * Méthode retournant le graphe de la carte
+ * @return Retourne le graphe de la carte avec le type Graphe
+ */
     public Graphe getGrapheGrille() {
         return this.graphe;
+    }
+/**
+ * Methode permettant de définir le graphe des zombies.
+ * Ce graphe est équivalant au graphe de la carte, à ceci prêt que la case contenant le soleil n'est connectée à aucune autre
+ * (cela correspond à une ligne et une colonne de zero aux coordonnées du soleil) 
+ */
+    public void setGrapheZombie() {
+
+        this.grapheZombie = this.setGraphe(this.taille * this.taille * 3);
+        if (this.soleil != null) {
+            int _soleil = this.soleil.getY()+(this.soleil.getX()*this.taille)-this.taille;
+            for (int i = 1; i <= this.taille*3*this.taille; i++) {
+                this.grapheZombie.modifierMatrice(_soleil, i, 0);
+                this.grapheZombie.modifierMatrice(i, _soleil, 0);
+            }
+
+        }
+    }
+/**
+ * Permet de d'obtenir le graphe des zombies
+ * @return Retourne le graphe des zombies grâce au type Graphe
+ */
+    public Graphe getGrapheZombie() {
+        return this.grapheZombie;
     }
 
     /**
