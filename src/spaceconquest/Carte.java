@@ -122,6 +122,14 @@ public class Carte {
             }
         }
     }
+    
+    public void isolerSommet (int s) {
+        
+         for (int i = 1; i <= this.taille*3*this.taille; i++) {
+                this.graphe.modifierMatrice(s, i, 0);
+                this.graphe.modifierMatrice(i, s, 0);
+            }
+    }
 
     /**
      * Methode definissant le graphe général de la carte Pour ce faire, on utilise une
@@ -182,11 +190,8 @@ public class Carte {
 
         this.grapheZombie = this.setGraphe(this.taille * this.taille * 3);
         if (this.soleil != null) {
-            int _soleil = this.soleil.getY()+(this.soleil.getX()*this.taille)-this.taille;
-            for (int i = 1; i <= this.taille*3*this.taille; i++) {
-                this.grapheZombie.modifierMatrice(_soleil, i, 0);
-                this.grapheZombie.modifierMatrice(i, _soleil, 0);
-            }
+            int _soleil = this.soleil.getY()+(this.soleil.getX()*this.taille)-this.taille;            
+            this.isolerSommet(_soleil);
 
         }
     }
