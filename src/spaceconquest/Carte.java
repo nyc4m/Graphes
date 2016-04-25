@@ -24,6 +24,7 @@ public class Carte {
     private Graphe graphe;
     private Graphe grapheZombie;
     private ArrayList<Couple> asteroides;
+    private Graphe grapheLicornes;
     /**
      * Stocke les coordonnées du soleil pour en bannir l'accès
      */
@@ -65,12 +66,13 @@ public class Carte {
         this.getCase(i, j).addObjetCeleste(obj);
         if (obj != null) {
             Couple c = new Couple(i, j);
-            if (obj.getType().equals("etoile")) {              
+            if (obj.getType().equals("etoile")) {
                 soleil = c;
                 this.setGrapheZombie();
-            }else if(obj.getType().equals("asteroide")){
+            } else if (obj.getType().equals("asteroide")) {
                 this.asteroides.add(c);
-                }
+                this.setGrapheLicornes();
+            }
             obj.setPosition(c);
         }
     }
@@ -129,11 +131,11 @@ public class Carte {
     }
 
     /**
-     * Methode definissant le graphe général de la carte Pour ce faire, on utilise une
-     * double boucle et une variable rédéfinissant la position à chaque tour de
-     * la deuxième boucle. Trois liaisons sont à réaliser : position + n* 2;
-     * position + n; et suivant si n est pair ou impair, position + n -1 ou
-     * position + n +1
+     * Methode definissant le graphe général de la carte Pour ce faire, on
+     * utilise une double boucle et une variable rédéfinissant la position à
+     * chaque tour de la deuxième boucle. Trois liaisons sont à réaliser :
+     * position + n* 2; position + n; et suivant si n est pair ou impair,
+     * position + n -1 ou position + n +1
      *
      *
      */
@@ -165,42 +167,66 @@ public class Carte {
         }
         return graphe;
     }
-/**
- * Méthode definissant le graphe de la carte (qui correspond au graphe général
- */
+
+    /**
+     * Méthode definissant le graphe de la carte (qui correspond au graphe
+     * général
+     */
     public void setGrapheGrille() {
         this.graphe = this.setGraphe(this.taille * this.taille * 3);
     }
-/**
- * Méthode retournant le graphe de la carte
- * @return Retourne le graphe de la carte avec le type Graphe
- */
+
+    /**
+     * Méthode retournant le graphe de la carte
+     *
+     * @return Retourne le graphe de la carte avec le type Graphe
+     */
     public Graphe getGrapheGrille() {
         return this.graphe;
     }
-/**
- * Methode permettant de définir le graphe des zombies.
- * Ce graphe est équivalant au graphe de la carte, à ceci prêt que la case contenant le soleil n'est connectée à aucune autre
- * (cela correspond à une ligne et une colonne de zero aux coordonnées du soleil) 
- */
+
+    /**
+     * Methode permettant de définir le graphe des zombies. Ce graphe est
+     * équivalant au graphe de la carte, à ceci prêt que la case contenant le
+     * soleil n'est connectée à aucune autre (cela correspond à une ligne et une
+     * colonne de zero aux coordonnées du soleil)
+     */
     public void setGrapheZombie() {
 
         this.grapheZombie = this.setGraphe(this.taille * this.taille * 3);
         if (this.soleil != null) {
-            int _soleil = this.soleil.getY()+(this.soleil.getX()*this.taille)-this.taille;
-            for (int i = 1; i <= this.taille*3*this.taille; i++) {
-                this.grapheZombie.modifierMatrice(_soleil, i, 0);
-                this.grapheZombie.modifierMatrice(i, _soleil, 0);
+            int _soleil = this.soleil.getY() + (this.soleil.getX() * this.taille) - this.taille;
+            for (int i = 1; i <= this.taille * 3 * this.taille; i++) {
+                this.grapheZombie.ajouterArc(i, _soleil, 0);
             }
 
         }
     }
-/**
- * Permet de d'obtenir le graphe des zombies
- * @return Retourne le graphe des zombies grâce au type Graphe
- */
+
+    /**
+     * Permet de d'obtenir le graphe des zombies
+     *
+     * @return Retourne le graphe des zombies grâce au type Graphe
+     */
     public Graphe getGrapheZombie() {
         return this.grapheZombie;
+    }
+
+    public void setGrapheLicornes() {
+        this.grapheLicornes = this.setGraphe(this.taille * this.taille * 3);
+        if (this.asteroides != null) {
+            for (int i = 1; i < this.asteroides.size(); i++) {
+                int _asteroide = this.asteroides.get(i).getY() + (this.asteroides.get(i).getX()*this.taille) - this.taille;
+                for(int j = 1; j <= this.taille * 3; j++){
+                    this.grapheLicornes.modifierMatrice(j, _asteroide, 2);
+                }        
+                
+            }
+        }
+    }
+    
+    public Graphe getGrapheLicornes(){
+        return this.grapheLicornes;
     }
 
     /**
