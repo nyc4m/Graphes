@@ -215,17 +215,20 @@ public class Carte {
     public void setGrapheLicornes() {
         this.grapheLicornes = this.setGraphe(this.taille * this.taille * 3);
         if (this.asteroides != null) {
-            for (int i = 1; i < this.asteroides.size(); i++) {
-                int _asteroide = this.asteroides.get(i).getY() + (this.asteroides.get(i).getX()*this.taille) - this.taille;
-                for(int j = 1; j <= this.taille * 3; j++){
-                    this.grapheLicornes.modifierMatrice(j, _asteroide, 2);
-                }        
-                
+            for (int i = 0; i < this.asteroides.size(); i++) {
+                int _asteroide = this.asteroides.get(i).getY() + (this.asteroides.get(i).getX() * this.taille) - this.taille;
+
+                for (int j = 1; j <= this.taille * 3; j++) {
+                    if (this.getGrapheLicornes().getMatrice(_asteroide, j) == 1) {
+                        this.grapheLicornes.modifierMatrice(_asteroide, j, 2);
+                    }
+                }
+
             }
         }
     }
-    
-    public Graphe getGrapheLicornes(){
+
+    public Graphe getGrapheLicornes() {
         return this.grapheLicornes;
     }
 
