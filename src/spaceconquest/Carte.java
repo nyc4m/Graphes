@@ -211,13 +211,17 @@ public class Carte {
     public Graphe getGrapheZombie() {
         return this.grapheZombie;
     }
-
+/**
+ * Génère le graphe des licornes, dans lequel on ne peut pas accéder au soleil, et aller sur un asteroide coute deux PA.
+ */
     public void setGrapheLicornes() {
         this.grapheLicornes = this.setGraphe(this.taille * this.taille * 3);
         if (this.asteroides != null) {
             for (int i = 0; i < this.asteroides.size(); i++) {
+                //On boucle de manière à accéder à tous les asteroides.
+                //pour chaque boucle, la position de l'astéroide est calculée
                 int _asteroide = this.asteroides.get(i).getY() + (this.asteroides.get(i).getX() * this.taille) - this.taille;
-
+                //le graphe est parcouru ligne par ligne, et tous les 1 sont changés par des deux
                 for (int j = 1; j <= this.taille * 3; j++) {
                     if (this.getGrapheLicornes().getMatrice(_asteroide, j) == 1) {
                         this.grapheLicornes.modifierMatrice(_asteroide, j, 2);
