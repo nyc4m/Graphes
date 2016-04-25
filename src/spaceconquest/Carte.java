@@ -4,6 +4,7 @@
 package spaceconquest;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 import spaceconquest.Map.Case;
 import spaceconquest.Map.Couleur;
@@ -22,6 +23,7 @@ public class Carte {
     private Couple caseSelectionnee;                                                //case actuellement sélectionnée par le joueur
     private Graphe graphe;
     private Graphe grapheZombie;
+    private ArrayList<Couple> asteroides;
     /**
      * Stocke les coordonnées du soleil pour en bannir l'accès
      */
@@ -31,6 +33,7 @@ public class Carte {
     public Carte(int _taille) {
         this.taille = _taille;
         this.cases = new HashMap<>();
+        this.asteroides = new ArrayList();
         //initialisation de la map vide
         for (int i = 1; i <= 3 * _taille; i++) {
             for (int j = 1; j <= _taille; j++) {
@@ -65,7 +68,9 @@ public class Carte {
             if (obj.getType().equals("etoile")) {              
                 soleil = c;
                 this.setGrapheZombie();
-            }
+            }else if(obj.getType().equals("asteroide")){
+                this.asteroides.add(c);
+                }
             obj.setPosition(c);
         }
     }
