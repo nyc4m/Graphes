@@ -138,13 +138,7 @@ public class Carte {
         }
     }
     
-    public void isolerSommet (int s) {
-        
-         for (int i = 1; i <= this.taille*3*this.taille; i++) {
-                this.graphe.modifierMatrice(s, i, 0);
-                this.graphe.modifierMatrice(i, s, 0);
-            }
-    }
+      
 
     /**
      * Methode definissant le graphe général de la carte Pour ce faire, on
