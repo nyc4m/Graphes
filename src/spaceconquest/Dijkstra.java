@@ -42,7 +42,7 @@ public class Dijkstra {
     }
 
     public void initialisation() {
-            mark = new ArrayList();
+        mark = new ArrayList();
         for (int i = 1; i < mark.size(); i++) {
             mark.add(false);
         }
@@ -58,46 +58,42 @@ public class Dijkstra {
             d.add(d.size() + 1);
         }
     }
-    
+
     public void relachement(int a, int b) {
 
-       if (G.getMatrice(a, b) != 0) {
-            
-       if (d.get(b) > d.get(a) + G.getMatrice(a, b)) {
-            d.set(b, d.get(a) + G.getMatrice(a, b));
-            pi.set(b, a);
+        if (G.getMatrice(a, b) != 0) {
+
+            if (d.get(b) > d.get(a) + G.getMatrice(a, b)) {
+                d.set(b, d.get(a) + G.getMatrice(a, b));
+                pi.set(b, a);
+
+            }
 
         }
-       
-        }
-
- 
 
     }
 
     /*
     * Ici , faut faire ça (a ← le sommet non marqu´e de d[a] minimum)
-    */
-    public Integer sommetNonMarqué(){
-       
+     */
+    public Integer sommetNonMarqué() {
+
         int res;
-       
-        
-   for (int i = 1; i < d.size(); i++) {
-   
-       int sommet;
-        sommet = G.getNbSommet();
-        
-        if (0==0){
-            
-        }
-         return i;
+
+        for (int i = 1; i < d.size(); i++) {
+
+            int sommet;
+            sommet = G.getNbSommet();
+
+            if (0 == 0) {
+
+            }
+            return i;
         }
         return null;
-       
+
     }
-    
-    
+
     public void Algo(Graphe g) {
         initialisation();
         int a = 1;
