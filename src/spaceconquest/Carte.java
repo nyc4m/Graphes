@@ -4,6 +4,7 @@
 package spaceconquest;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 import spaceconquest.Map.Case;
 import spaceconquest.Map.Couleur;
@@ -22,6 +23,8 @@ public class Carte {
     private Couple caseSelectionnee;                                                //case actuellement sélectionnée par le joueur
     private Graphe graphe;
     private Graphe grapheZombie;
+    private ArrayList<Couple> asteroides;
+    private Graphe grapheLicornes;
     /**
      * Stocke les coordonnées du soleil pour en bannir l'accès
      */
@@ -31,6 +34,7 @@ public class Carte {
     public Carte(int _taille) {
         this.taille = _taille;
         this.cases = new HashMap<>();
+        this.asteroides = new ArrayList();
         //initialisation de la map vide
         for (int i = 1; i <= 3 * _taille; i++) {
             for (int j = 1; j <= _taille; j++) {
@@ -39,7 +43,7 @@ public class Carte {
         }
         this.caseSelectionnee = null;
         this.setGrapheGrille();
-        this.setGrapheZombie();
+        
     }
 
 //getteur de la taille de la map
@@ -62,12 +66,23 @@ public class Carte {
         this.getCase(i, j).addObjetCeleste(obj);
         if (obj != null) {
             Couple c = new Couple(i, j);
-            if (obj.getType().equals("etoile")) {              
+            if (obj.getType().equals("etoile")) {
                 soleil = c;
-                this.setGrapheZombie();
+                
+            } else if (obj.getType().equals("asteroide")) {
+                this.asteroides.add(c);
+                this.setGrapheLicornes();
             }
             obj.setPosition(c);
+            this.actualiser();
         }
+    }
+    /**
+     * Permet d'actualiser la carte lors de l'ajout d'un objet
+     */
+    public void actualiser(){
+        this.grapheLicornes = this.setGrapheLicornes();
+        this.grapheZombie = this.setGrapheZombie();
     }
 
 //ajoute un vaisseau à la position i,j (Passer par la classe partie !)
@@ -123,20 +138,14 @@ public class Carte {
         }
     }
     
-    public void isolerSommet (int s) {
-        
-         for (int i = 1; i <= this.taille*3*this.taille; i++) {
-                this.graphe.modifierMatrice(s, i, 0);
-                this.graphe.modifierMatrice(i, s, 0);
-            }
-    }
+      
 
     /**
-     * Methode definissant le graphe général de la carte Pour ce faire, on utilise une
-     * double boucle et une variable rédéfinissant la position à chaque tour de
-     * la deuxième boucle. Trois liaisons sont à réaliser : position + n* 2;
-     * position + n; et suivant si n est pair ou impair, position + n -1 ou
-     * position + n +1
+     * Methode definissant le graphe général de la carte Pour ce faire, on
+     * utilise une double boucle et une variable rédéfinissant la position à
+     * chaque tour de la deuxième boucle. Trois liaisons sont à réaliser :
+     * position + n* 2; position + n; et suivant si n est pair ou impair,
+     * position + n -1 ou position + n +1
      *
      *
      */
@@ -168,39 +177,83 @@ public class Carte {
         }
         return graphe;
     }
-/**
- * Méthode definissant le graphe de la carte (qui correspond au graphe général
- */
+
+    /**
+     * Méthode definissant le graphe de la carte (qui correspond au graphe
+     * général
+     */
     public void setGrapheGrille() {
         this.graphe = this.setGraphe(this.taille * this.taille * 3);
     }
-/**
- * Méthode retournant le graphe de la carte
- * @return Retourne le graphe de la carte avec le type Graphe
- */
+
+    /**
+     * Méthode retournant le graphe de la carte
+     *
+     * @return Retourne le graphe de la carte avec le type Graphe
+     */
     public Graphe getGrapheGrille() {
         return this.graphe;
     }
-/**
- * Methode permettant de définir le graphe des zombies.
- * Ce graphe est équivalant au graphe de la carte, à ceci prêt que la case contenant le soleil n'est connectée à aucune autre
- * (cela correspond à une ligne et une colonne de zero aux coordonnées du soleil) 
- */
-    public void setGrapheZombie() {
-
-        this.grapheZombie = this.setGraphe(this.taille * this.taille * 3);
+    public void isolerSommet (int s) {
+        
+         for (int i = 1; i <= this.taille*3*this.taille; i++) {
+                this.graphe.modifierMatrice(s, i, 0);
+                this.graphe.modifierMatrice(i, s, 0);
+            }
+         
+    }
+    
+    /**
+     * Methode permettant de définir le graphe des zombies. Ce graphe est
+     * équivalant au graphe de la carte, à ceci prêt que la case contenant le
+     * soleil n'est connectée à aucune autre (cela correspond à une ligne et une
+     * colonne de zero aux coordonnées du soleil)
+     */
+    public Graphe setGrapheZombie() {
+        Graphe zombie;
+        zombie = this.setGraphe(this.taille * this.taille * 3);
         if (this.soleil != null) {
-            int _soleil = this.soleil.getY()+(this.soleil.getX()*this.taille)-this.taille;            
-            this.isolerSommet(_soleil);
+            int _soleil = this.soleil.getY() + (this.soleil.getX() * this.taille) - this.taille;
+           isolerSommet(_soleil);
 
         }
+        
+        return zombie;
     }
-/**
- * Permet de d'obtenir le graphe des zombies
- * @return Retourne le graphe des zombies grâce au type Graphe
- */
+
+    /**
+     * Permet de d'obtenir le graphe des zombies
+     *
+     * @return Retourne le graphe des zombies grâce au type Graphe
+     */
     public Graphe getGrapheZombie() {
         return this.grapheZombie;
+    }
+/**
+ * Génère le graphe des licornes, dans lequel on ne peut pas accéder au soleil, et aller sur un asteroide coute deux PA.
+ */
+    public Graphe setGrapheLicornes() {
+        Graphe licorne;
+        licorne = this.setGrapheZombie();
+        if (this.asteroides != null) {
+            for (int i = 0; i < this.asteroides.size(); i++) {
+                //On boucle de manière à accéder à tous les asteroides.
+                //pour chaque boucle, la position de l'astéroide est calculée
+                int _asteroide = this.asteroides.get(i).getY() + (this.asteroides.get(i).getX() * this.taille) - this.taille;
+                //le graphe est parcouru ligne par ligne, et tous les 1 sont changés par des deux
+                for (int j = 1; j <= this.taille * 3; j++) {
+                    if (licorne.getMatrice(_asteroide, j) == 1) {
+                        licorne.modifierMatrice(_asteroide, j, 2);
+                    }
+                }
+
+            }
+        }
+        return licorne;
+    }
+
+    public Graphe getGrapheLicornes() {
+        return this.grapheLicornes;
     }
 
     /**
@@ -211,6 +264,7 @@ public class Carte {
     public Couple getSoleil() {
         return soleil;
     }
+
 
     /**
      * Permet de colorer tout la carte en blanc
@@ -227,4 +281,35 @@ public class Carte {
             }
         }
     }
+    
+    public void colorationMouvement(Graphe g){
+                
+        
+         Dijkstra d =new Dijkstra(g);
+         d.plusCourtChemin();
+        
+         
+         for (int e=1;e<=d.sommets.size();e++) { 
+           if (d.distances.get(e)==1) {       // 1 point de déplacement
+                Couple c = new Couple(e, e+1); 
+
+                this.getCase(c).setCouleur(Couleur.Vert);
+           }
+           else if(d.distances.get(e)==2)   // 2 points de déplacement
+           {
+               Couple c = new Couple(e, e+1); 
+
+                this.getCase(c).setCouleur(Couleur.Jaune);
+               
+           }
+             
+         }
+         
+         
+    
+
+
+    }  
 }
+
+   

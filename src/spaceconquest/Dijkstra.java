@@ -11,21 +11,29 @@ import java.util.ArrayList;
  *
  * @author bp818669
  */
-public class Dijkstra {
+public class Dijkstra  {
     
-    private ArrayList<Integer> sommets;
-    private ArrayList<Boolean> mark;
-    private ArrayList<Integer> distances;
-    private ArrayList<Integer> antecedents;
-    private Graphe graphe;
+    public ArrayList<Integer> sommets;
+    public ArrayList<Boolean> mark;
+    public ArrayList<Integer> distances;
+    public ArrayList<Integer> antecedents;
+    public Graphe graphe;
+    /**
+     * Constructeur de dijkstra permet principalement d'initialiser toutes les listes, et de cloner le graphe concerne
+     * @param g 
+     */
+    
+    
     
     public Dijkstra(Graphe g){
         this.sommets = new ArrayList();
         this.mark = new ArrayList();
         this.distances = new ArrayList();
         this.antecedents = new ArrayList();
-        this.graphe = g;
+        this.graphe = g.clone();
     }
+    
+       
     
     public int infini(){
         int res = 0;
@@ -90,17 +98,18 @@ public class Dijkstra {
     
     public int minDistance(){
         int valMin = this.distances.get(0);
-        //cette boucle doit etre changee en boucle for normale
-        //(me demander pour expliquation)
-        for(int e  : this.distances){
-            if(valMin>e && this.mark.get(this.distances.indexOf(e)) == false){
-                valMin = e;
+        int rang = 0;
+        for(int i = 1; i<this.distances.size(); i++){
+            if(valMin>this.distances.get(i) && this.mark.get(i) == false){
+                valMin = this.distances.get(i);
+                rang = i;
             }
         }
         
-        return valMin;
+        return rang;
     }
     
+    @Deprecated
     public int rangSommetMin(){
         return this.distances.indexOf(this.minDistance());
     }
@@ -115,17 +124,20 @@ public class Dijkstra {
             this.distances.set(b, nvelleDistanceAB);
             this.antecedents.set(b, a);
         }
+        
     }
     
     public void plusCourtChemin(){
         this.intitialisation();
         while(!this.listeTerminee()){
-            int x = this.rangSommetMin();
+            int x = this.minDistance();
             this.mark.set(x, Boolean.TRUE);
             for(int i = 1; i <= this.graphe.getNbSommet(); i++){
                 this.maj_distance(x, i);
             }
         }
     }
+    
+    
     
 }
