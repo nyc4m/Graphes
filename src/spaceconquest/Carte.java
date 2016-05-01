@@ -289,13 +289,13 @@ public class Carte {
          d.plusCourtChemin();
         
          
-         for (int e=1;e<=d.sommets.size();e++) { 
-           if (d.distances.get(e)==1) {       // 1 point de déplacement
+         for (int e=1;e<=d.getDistances().size();e++) { 
+           if (d.getDistances().get(e)==1) {       // 1 point de déplacement
                 Couple c = new Couple(e, e+1); 
 
                 this.getCase(c).setCouleur(Couleur.Vert);
            }
-           else if(d.distances.get(e)==2)   // 2 points de déplacement
+           else if(d.getDistances().get(e)==2)   // 2 points de déplacement
            {
                Couple c = new Couple(e, e+1); 
 

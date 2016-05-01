@@ -13,11 +13,11 @@ import java.util.ArrayList;
  */
 public class Dijkstra  {
     
-    public ArrayList<Integer> sommets;
-    public ArrayList<Boolean> mark;
-    public ArrayList<Integer> distances;
-    public ArrayList<Integer> antecedents;
-    public Graphe graphe;
+    private ArrayList<Integer> sommets;
+    private ArrayList<Boolean> mark;
+    private ArrayList<Integer> distances;
+    private ArrayList<Integer> antecedents;
+    private Graphe graphe;
     /**
      * Constructeur de dijkstra permet principalement d'initialiser toutes les listes, et de cloner le graphe concerne
      * @param g 
@@ -136,6 +136,26 @@ public class Dijkstra  {
                 this.maj_distance(x, i);
             }
         }
+    }
+
+    public ArrayList<Integer> getSommets() {
+        return sommets;
+    }
+
+    public ArrayList<Boolean> getMark() {
+        return mark;
+    }
+
+    public ArrayList<Integer> getDistances() {
+        return distances;
+    }
+
+    public ArrayList<Integer> getAntecedents() {
+        return antecedents;
+    }
+
+    public Graphe getGraphe() {
+        return graphe;
     }
     
     
