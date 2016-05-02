@@ -62,6 +62,21 @@ public class Graphe {
         }
         return 0;
     }
+    /**
+     * Clone le graphe courant
+     * @return retourne un Graphe contenant une copie du graphe courant
+     */
+    public Graphe clone(){
+        Graphe clone = new Graphe(this.nbSommet); //Un nouveau graphe est créé contenant le même nombre de sommet.
+        for(int i = 1; i <= this.nbSommet; i++){ //On parcourt toutes les lignes
+            for(int j = 1; j <= this.nbSommet; j++){ //et toutes les colonnes
+                clone.ajouterArc(i, j, this.getMatrice(i, j)); //Pour chaque elements de la matrice de clone, on attribue la valeur au même coordonnées de la matrice du graphe courant/
+            }
+        }
+        
+        return clone;
+        
+    }
 
     //renvoie l'orientation
     public boolean getOrientation() {
