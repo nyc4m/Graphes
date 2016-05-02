@@ -104,5 +104,17 @@ public class Partie {
         //lancement de l'IHM
         this.fenetre = new Fenetre(this.carte);
     }
+
+    public Vaisseau getZombificator() {
+        return Zombificator;
+    }
+
+    public Planete getLicoLand() {
+        return LicoLand;
+    }
+
+    public Vaisseau getLicoShip() {
+        return LicoShip;
+    }
     
 }

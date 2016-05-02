@@ -43,7 +43,7 @@ public class Carte {
         }
         this.caseSelectionnee = null;
         this.setGrapheGrille();
-        
+
     }
 
 //getteur de la taille de la map
@@ -68,7 +68,7 @@ public class Carte {
             Couple c = new Couple(i, j);
             if (obj.getType().equals("etoile")) {
                 soleil = c;
-                
+
             } else if (obj.getType().equals("asteroide")) {
                 this.asteroides.add(c);
                 this.setGrapheLicornes();
@@ -77,10 +77,11 @@ public class Carte {
             this.actualiser();
         }
     }
+
     /**
      * Permet d'actualiser la carte lors de l'ajout d'un objet
      */
-    public void actualiser(){
+    public void actualiser() {
         this.grapheLicornes = this.setGrapheLicornes();
         this.grapheZombie = this.setGrapheZombie();
     }
@@ -137,8 +138,6 @@ public class Carte {
             }
         }
     }
-    
-      
 
     /**
      * Methode definissant le graphe général de la carte Pour ce faire, on
@@ -195,6 +194,15 @@ public class Carte {
         return this.graphe;
     }
 
+    public void isolerSommet(int s) {
+
+        for (int i = 1; i <= this.taille * 3 * this.taille; i++) {
+            this.graphe.modifierMatrice(s, i, 0);
+            this.graphe.modifierMatrice(i, s, 0);
+        }
+
+    }
+
     /**
      * Methode permettant de définir le graphe des zombies. Ce graphe est
      * équivalant au graphe de la carte, à ceci prêt que la case contenant le
@@ -206,12 +214,10 @@ public class Carte {
         zombie = this.setGraphe(this.taille * this.taille * 3);
         if (this.soleil != null) {
             int _soleil = this.soleil.getY() + (this.soleil.getX() * this.taille) - this.taille;
-            for (int i = 1; i <= this.taille * 3 * this.taille; i++) {
-                zombie.ajouterArc(i, _soleil, 0);
-            }
+            isolerSommet(_soleil);
 
         }
-        
+
         return zombie;
     }
 
@@ -223,9 +229,11 @@ public class Carte {
     public Graphe getGrapheZombie() {
         return this.grapheZombie;
     }
-/**
- * Génère le graphe des licornes, dans lequel on ne peut pas accéder au soleil, et aller sur un asteroide coute deux PA.
- */
+
+    /**
+     * Génère le graphe des licornes, dans lequel on ne peut pas accéder au
+     * soleil, et aller sur un asteroide coute deux PA.
+     */
     public Graphe setGrapheLicornes() {
         Graphe licorne;
         licorne = this.setGrapheZombie();
@@ -273,5 +281,71 @@ public class Carte {
 
             }
         }
+    }
+    /**
+     * Métohde permettant d'obtenir la position du vaisseau
+     * @param v Représente le vaisseau
+     * @return rencoie un couple mdoélisant sa positon
+     */
+    public Couple getPosVaisseau(Vaisseau v) {
+
+        Couple c = new Couple(v.getPosition().getX(), v.getPosition().getY());
+
+        return c;
+    }
+    /**
+     * Méthode permettant de renvoyer un couple à partir d'un sommet 
+     * @param nbSommet Numéro du sommet actuelle
+     * @param tailleGraphe Représente la taille du Graphe
+     * @return 
+     */
+    public Couple getCouple(int nbSommet, int tailleGraphe) {
+        int x; //Représente le sommet actuelle
+        int y;  //Représente la taille du graphe
+        x = nbSommet / tailleGraphe;
+        y = nbSommet % tailleGraphe;
+        if (nbSommet % tailleGraphe != 0) { //cas ou nous somme à la fin d'une ligne
+            x += 1;
+        }
+        if (y == 0) {  //cas ou nous somme à la fin d'une ligne
+            y = this.taille;
+        }
+        Couple c = new Couple(x, y);
+        return c;
+
+    }
+
+    /**
+     * Méthode permettant de colorier les contrainte de déplacement
+     *
+     * @param g Graphe représentant les contraintes
+     * @param v Représente le vaisseau
+     */
+    public void colorationMouvement(Graphe g, Couple v) {
+        
+        Dijkstra d = new Dijkstra(g);
+        // on récupère la position du vaisseau passé  en paramètre
+        int position = v.getY() + (this.taille * v.getX()) - this.taille;
+        //On lance un Dijkstra à partir de la position
+        d.plusCourtChemin(position);
+        //parcour du tableau des distances
+        for (int i = 1; i <= d.getDistances().size() - 1; i++) {
+            // Si la diastance est de 1 on colorie en vert
+            if (d.getDistances().get(i) == 1) {       // 1 point de déplacement
+                Couple c = new Couple(getCouple(i, this.taille).getX(), getCouple(i, this.taille).getY());
+
+                this.getCase(c).setCouleur(Couleur.Vert);
+            }
+            // Si la diastance est de 1 on colorie en jaune
+            if (d.getDistances().get(i) == 2) // 2 points de déplacement
+            {
+                Couple c = new Couple(getCouple(i, this.taille).getX(), getCouple(i, this.taille).getY());
+
+                this.getCase(c).setCouleur(Couleur.Jaune);
+
+            }
+
+        }
+
     }
 }
