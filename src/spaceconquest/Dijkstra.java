@@ -65,7 +65,7 @@ public class Dijkstra  {
     /**
      * Méthode permettant d'intialiser tous les tableaux concernés par l'algorithme
      */
-    public void intitialisation(int dep) {
+    public void intitialisation(int dep, int soleil) {
      /**
       * Cette partie sert à attribuer une valeur -qui ne gênera pas l'algorithme- à l'indice 0 de tous les tableaux.
       * Ainsi, lorsqu'une valeur sera entrée dans un tableau, elle sera entrée à l'indice correspondant au sommet à laquelle elle est associée.
@@ -92,6 +92,8 @@ public class Dijkstra  {
         
         //Le premier sommet se voit attribuer une distance de 0
         this.distances.set(dep, 0);
+        //Le soleil est marque comme traite, ce aui evite un calcul impossible pour l'algo
+        this.mark.set(soleil, Boolean.TRUE);
         
     }
     
@@ -209,8 +211,8 @@ public class Dijkstra  {
     /**
      * Methode principale permettant de calculer le plus court chemin.
      */
-    public void plusCourtChemin(int dep){
-        this.intitialisation(dep);
+    public void plusCourtChemin(int dep, int soleil){
+        this.intitialisation(dep, soleil);
         while(!this.listeTerminee()){
             int x = this.minDistance();
             this.mark.set(x, Boolean.TRUE);

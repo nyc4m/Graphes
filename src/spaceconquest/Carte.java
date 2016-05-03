@@ -344,7 +344,7 @@ public class Carte {
         // on récupère la position du vaisseau passé  en paramètre
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
-        d.plusCourtChemin(position);
+        d.plusCourtChemin(position, this.position(this.soleil.getX(), this.soleil.getY()));
         //parcour du tableau des distances
         for (int i = 1; i <= d.getDistances().size() - 1; i++) {
             // Si la diastance est de 1 on colorie en vert
