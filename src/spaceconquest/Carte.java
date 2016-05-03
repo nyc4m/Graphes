@@ -209,16 +209,15 @@ public class Carte {
      * soleil n'est connectée à aucune autre (cela correspond à une ligne et une
      * colonne de zero aux coordonnées du soleil)
      */
-    public Graphe setGrapheZombie() {
-        Graphe zombie;
-        zombie = this.setGraphe(this.taille * this.taille * 3);
+    public void setGrapheZombie() {
+        this.grapheZombie = this.graphe.clone();
         if (this.soleil != null) {
             int _soleil = this.soleil.getY() + (this.soleil.getX() * this.taille) - this.taille;
             isolerSommet(_soleil);
 
         }
 
-        return zombie;
+        
     }
 
     /**
