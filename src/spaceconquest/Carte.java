@@ -84,8 +84,9 @@ public class Carte {
      * Permet d'actualiser la carte lors de l'ajout d'un objet
      */
     public void actualiser() {
-        this.setGrapheLicornes();
+        
         this.setGrapheZombie();
+        this.setGrapheLicornes();
     }
 
 //ajoute un vaisseau à la position i,j (Passer par la classe partie !)
