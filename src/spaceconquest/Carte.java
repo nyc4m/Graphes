@@ -194,13 +194,24 @@ public class Carte {
         return this.graphe;
     }
 
-    public void isolerSommet(int s) {
+    public Graphe isolerSommet(int s, Graphe g) {
 
         for (int i = 1; i <= this.taille * 3 * this.taille; i++) {
-            this.graphe.modifierMatrice(s, i, 0);
-            this.graphe.modifierMatrice(i, s, 0);
+            g.modifierMatrice(s, i, 0);
+            g.modifierMatrice(i, s, 0);
         }
+        
+        return g;
 
+    }
+    /**
+     * Donne le numero du sommet en fonction des coordonnees
+     * @param x coordonnee x
+     * @param y coordonnee y
+     * @return numero du sommet
+     */
+    public int position(int x, int y){
+        return y+(x*this.taille)-this.taille;
     }
 
     /**
@@ -212,8 +223,8 @@ public class Carte {
     public void setGrapheZombie() {
         this.grapheZombie = this.graphe.clone();
         if (this.soleil != null) {
-            int _soleil = this.soleil.getY() + (this.soleil.getX() * this.taille) - this.taille;
-            isolerSommet(_soleil);
+            int _soleil = this.position(this.soleil.getX(), this.soleil.getY());
+            isolerSommet(_soleil, this.grapheZombie);
 
         }
 
