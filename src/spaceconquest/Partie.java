@@ -70,6 +70,15 @@ public class Partie {
         return this.mode;
     }
     
+    /**
+     * Méthode permettant de saovir si le mode est en automatique
+     * @return Vraie ou faux selon l'état
+     */
+    public boolean getModeAuto() {        
+        return this.getMode()==Mode.automatique ;
+        
+    }
+    
     //renvoie si l'IHM est prete
     public boolean isIHMReady() {
         return (this.fenetre != null);
