@@ -342,7 +342,7 @@ public class Carte {
 
         Dijkstra d = new Dijkstra(g);
         // on récupère la position du vaisseau passé  en paramètre
-        int position = v.getY() + (this.taille * v.getX()) - this.taille;
+        int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
         d.plusCourtChemin(position);
         //parcour du tableau des distances
