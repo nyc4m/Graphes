@@ -245,17 +245,16 @@ public class Carte {
      * soleil, et aller sur un asteroide coute deux PA.
      */
     public Graphe setGrapheLicornes() {
-        Graphe licorne;
-        licorne = this.setGrapheZombie();
+        this.grapheLicornes = this.grapheZombie.clone();
         if (this.asteroides != null) {
             for (int i = 0; i < this.asteroides.size(); i++) {
                 //On boucle de manière à accéder à tous les asteroides.
                 //pour chaque boucle, la position de l'astéroide est calculée
-                int _asteroide = this.asteroides.get(i).getY() + (this.asteroides.get(i).getX() * this.taille) - this.taille;
+                int _asteroide = this.position(this.asteroides.get(i).getX(), this.asteroides.get(i).getY());
                 //le graphe est parcouru ligne par ligne, et tous les 1 sont changés par des deux
                 for (int j = 1; j <= this.taille * 3; j++) {
-                    if (licorne.getMatrice(_asteroide, j) == 1) {
-                        licorne.modifierMatrice(_asteroide, j, 2);
+                    if (this.grapheLicornes.getMatrice(_asteroide, j) == 1) {
+                        this.grapheLicornes.modifierMatrice(_asteroide, j, 2);
                     }
                 }
 
