@@ -43,6 +43,8 @@ public class Carte {
         }
         this.caseSelectionnee = null;
         this.setGrapheGrille();
+        this.setGrapheZombie();
+        this.setGrapheLicornes();
 
     }
 
@@ -82,8 +84,8 @@ public class Carte {
      * Permet d'actualiser la carte lors de l'ajout d'un objet
      */
     public void actualiser() {
-        this.grapheLicornes = this.setGrapheLicornes();
-        this.grapheZombie = this.setGrapheZombie();
+        this.setGrapheLicornes();
+        this.setGrapheZombie();
     }
 
 //ajoute un vaisseau à la position i,j (Passer par la classe partie !)
@@ -200,18 +202,20 @@ public class Carte {
             g.modifierMatrice(s, i, 0);
             g.modifierMatrice(i, s, 0);
         }
-        
+
         return g;
 
     }
+
     /**
      * Donne le numero du sommet en fonction des coordonnees
+     *
      * @param x coordonnee x
      * @param y coordonnee y
      * @return numero du sommet
      */
-    public int position(int x, int y){
-        return y+(x*this.taille)-this.taille;
+    public int position(int x, int y) {
+        return y + (x * this.taille) - this.taille;
     }
 
     /**
@@ -228,7 +232,6 @@ public class Carte {
 
         }
 
-        
     }
 
     /**
@@ -244,7 +247,7 @@ public class Carte {
      * Génère le graphe des licornes, dans lequel on ne peut pas accéder au
      * soleil, et aller sur un asteroide coute deux PA.
      */
-    public Graphe setGrapheLicornes() {
+    public void setGrapheLicornes() {
         this.grapheLicornes = this.grapheZombie.clone();
         if (this.asteroides != null) {
             for (int i = 0; i < this.asteroides.size(); i++) {
@@ -260,7 +263,7 @@ public class Carte {
 
             }
         }
-        return licorne;
+
     }
 
     public Graphe getGrapheLicornes() {
@@ -291,8 +294,10 @@ public class Carte {
             }
         }
     }
+
     /**
      * Métohde permettant d'obtenir la position du vaisseau
+     *
      * @param v Représente le vaisseau
      * @return rencoie un couple mdoélisant sa positon
      */
@@ -302,11 +307,13 @@ public class Carte {
 
         return c;
     }
+
     /**
-     * Méthode permettant de renvoyer un couple à partir d'un sommet 
+     * Méthode permettant de renvoyer un couple à partir d'un sommet
+     *
      * @param nbSommet Numéro du sommet actuelle
      * @param tailleGraphe Représente la taille du Graphe
-     * @return 
+     * @return
      */
     public Couple getCouple(int nbSommet, int tailleGraphe) {
         int x; //Représente le sommet actuelle
@@ -331,7 +338,7 @@ public class Carte {
      * @param v Représente le vaisseau
      */
     public void colorationMouvement(Graphe g, Couple v) {
-        
+
         Dijkstra d = new Dijkstra(g);
         // on récupère la position du vaisseau passé  en paramètre
         int position = v.getY() + (this.taille * v.getX()) - this.taille;
