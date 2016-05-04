@@ -5,6 +5,7 @@ package spaceconquest;
 
 import java.util.TimerTask;
 import java.util.Timer;
+import spaceconquest.Map.Couple;
 import spaceconquest.Parties.Mode;
 
 /**
@@ -13,55 +14,66 @@ import spaceconquest.Parties.Mode;
  */
 public class TimerPartie extends Timer {
 
-        private Partie partie;                                                  //partie en cours
-        
-            
+    private Partie partie;        //partie en cours
+
     //constructuer    
     public TimerPartie(Partie partie) {
         super();
         this.partie = partie;
-        if(this.partie.getMode() == Mode.automatique) {
+        if (this.partie.getMode() == Mode.automatique) {
             this.scheduleAtFixedRate(new TimerTaskPartie(this.partie), 0, 1000);
         }
     }
-    
+
     //arret du timer si besoin
     public void stop() {
         this.cancel();
     }
-    
+
     //sous classe privée
     private class TimerTaskPartie extends TimerTask {
-        
+
         private Partie partie;
-        
+
         //constructeur
         public TimerTaskPartie(Partie partie) {
             this.partie = partie;
         }
-        
+
         //fonction appellée à chaque tic du timer
         @Override
         public void run() {
-            if(this.partie.isIHMReady()) {
-                switch(this.partie.getTour()) {
-                    case Licorne : this.tourDesLicornes(); break;
-                    case Zombie : this.tourDesZombies(); break;
+            if (this.partie.isIHMReady()) {
+                switch (this.partie.getTour()) {
+                    case Licorne:
+                        this.tourDesLicornes();
+                        break;
+                    case Zombie:
+                        this.tourDesZombies();
+                        break;
                 }
-                    this.partie.tourSuivant();
+                this.partie.tourSuivant();
             }
         }
-    
+
         //ce qu'il se passe lors du tour des zombies
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
+            if (this.partie.getModeAuto() == true) {
+              
+            }
         }
-            
-        //ce qu'il se passe lors du tour des licornes
-        private void tourDesLicornes() {      
-            System.out.println("Tour des Licornes !");
-        }
-    }    
-}
 
+        //ce qu'il se passe lors du tour des licornes
+        private void tourDesLicornes() {
+            System.out.println("Tour des Licornes !");
+            
+
+            if (this.partie.getModeAuto() == true) 
+                partie.getCarte().effacerColoration();
+                partie.refresh();
+                   
+            }
+        }
+    }
 
