@@ -279,6 +279,8 @@ public class Carte {
     public Couple getSoleil() {
         return soleil;
     }
+    
+
 
     /**
      * Permet de colorer tout la carte en blanc
@@ -296,17 +298,25 @@ public class Carte {
         }
     }
 
+
     /**
      * Métohde permettant d'obtenir la position du vaisseau
      *
      * @param v Représente le vaisseau
      * @return rencoie un couple mdoélisant sa positon
      */
-    public Couple getPosVaisseau(Vaisseau v) {
+    public Couple getPosVaisseauCouple(Vaisseau v) {
 
         Couple c = new Couple(v.getPosition().getX(), v.getPosition().getY());
 
         return c;
+    }
+    
+        public int getPosVaisseauInt(Vaisseau v) {
+
+        int position = this.position(v.getPosition().getX(), v.getPosition().getY());
+
+        return position ;
     }
 
     /**
