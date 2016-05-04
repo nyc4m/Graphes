@@ -46,6 +46,10 @@ public class Fenetre extends JFrame {
         this.panelCarte.repaint();
     }
     
+           //recharge la carte
+    public void refreshCarte() {
+        this.panelCarte.repaint();
+    }
     //gestion de l'affichage
     @Override
     public void paint(Graphics g) {

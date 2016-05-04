@@ -97,7 +97,7 @@ public class Partie {
         else {
             tour = Race.Zombie;
         }
-        this.fenetre.refreshSide();
+        this.fenetre.refreshCarte();
         
     }
     
