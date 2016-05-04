@@ -290,7 +290,7 @@ public class Carte {
 
                 Couple c = new Couple(i, j); //représente la case
 
-                this.getCase(c).setCouleur(Couleur.Rouge); //On colorie la case en blanc
+                this.getCase(c).setCouleur(Couleur.Blanc); //On colorie la case en blanc
 
             }
         }
