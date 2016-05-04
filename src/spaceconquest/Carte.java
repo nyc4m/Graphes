@@ -84,7 +84,7 @@ public class Carte {
      * Permet d'actualiser la carte lors de l'ajout d'un objet
      */
     public void actualiser() {
-        
+
         this.setGrapheZombie();
         this.setGrapheLicornes();
     }
@@ -96,6 +96,8 @@ public class Carte {
             v.setPosition(new Couple(i, j));
         }
     }
+
+    
 
 //fait bouger le vaisseau présent en case départ à la case arrivée (détruisant tout vaisseau présent à cette case)
     public void BougerVaisseau(Couple depart, Couple arrivee) {
@@ -119,7 +121,7 @@ public class Carte {
             this.caseSelectionnee = null;
         } else //si une case avait déja été sélectionnée
         {
-            if (this.caseSelectionnee != null) {
+            if ((this.caseSelectionnee != null && ((this.getCase(c).getCouleur().equals(Couleur.Vert) == true) || (this.getCase(c).getCouleur().equals(Couleur.Jaune) == true)))) {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
                 this.BougerVaisseau(this.caseSelectionnee, c);
