@@ -25,6 +25,7 @@ public class Carte {
     private Graphe grapheZombie;
     private ArrayList<Couple> asteroides;
     private Graphe grapheLicornes;
+    private ArrayList<Integer> tabDistances;
     /**
      * Stocke les coordonnées du soleil pour en bannir l'accès
      */
@@ -45,6 +46,7 @@ public class Carte {
         this.setGrapheGrille();
         this.setGrapheZombie();
         this.setGrapheLicornes();
+        this.tabDistances = new ArrayList();
 
     }
 
@@ -84,7 +86,7 @@ public class Carte {
      * Permet d'actualiser la carte lors de l'ajout d'un objet
      */
     public void actualiser() {
-        
+
         this.setGrapheZombie();
         this.setGrapheLicornes();
     }
@@ -96,6 +98,8 @@ public class Carte {
             v.setPosition(new Couple(i, j));
         }
     }
+
+    
 
 //fait bouger le vaisseau présent en case départ à la case arrivée (détruisant tout vaisseau présent à cette case)
     public void BougerVaisseau(Couple depart, Couple arrivee) {
@@ -113,13 +117,21 @@ public class Carte {
 
 //méthode gérant ce qu'il se passe quand on clique sur une case en mode manuel
     public void selectionCase(Couple c) {
+        
+        //on stocke le numero du sommet pour le chercher dans le tableau
+        int numCase = this.position(c.getX(), c.getY());
+        //on regarde si la distance pour aller au sommet est au plus 2        
+        boolean caseOk = this.tabDistances.get(numCase) <= 2;         
+        
         if (c.equals(this.caseSelectionnee)) {
             //deselection de la case
             this.getCase(c).setCouleur(Couleur.Blanc);
             this.caseSelectionnee = null;
         } else //si une case avait déja été sélectionnée
+            
         {
-            if (this.caseSelectionnee != null) {
+            
+            if (this.caseSelectionnee != null && caseOk) {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
                 this.BougerVaisseau(this.caseSelectionnee, c);
@@ -345,6 +357,7 @@ public class Carte {
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
         d.plusCourtChemin(position, this.position(this.soleil.getX(), this.soleil.getY()));
+        this.tabDistances = d.getDistances();
         //parcour du tableau des distances
         for (int i = 1; i <= d.getDistances().size() - 1; i++) {
             // Si la diastance est de 1 on colorie en vert
