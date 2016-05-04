@@ -41,6 +41,11 @@ public class Fenetre extends JFrame {
         this.panelSide.repaint();
     }
     
+        //recharge la panel latéral
+    public void refresh() {
+        this.panelCarte.repaint();
+    }
+    
     //gestion de l'affichage
     @Override
     public void paint(Graphics g) {

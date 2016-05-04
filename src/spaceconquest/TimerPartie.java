@@ -69,9 +69,11 @@ public class TimerPartie extends Timer {
             System.out.println("Tour des Licornes !");
             
 
-            if (this.partie.getModeAuto() == true) {
+            if (this.partie.getModeAuto() == true) 
+                partie.getCarte().effacerColoration();
+                partie.refresh();
                    
             }
         }
     }
-}
+

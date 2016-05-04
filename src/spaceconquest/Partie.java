@@ -126,4 +126,9 @@ public class Partie {
         return LicoShip;
     }
     
+        //recharge la panel latéral
+    public void refresh() {
+        this.fenetre.refresh();
+    }
+    
 }
