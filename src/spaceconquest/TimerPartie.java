@@ -40,7 +40,13 @@ public class TimerPartie extends Timer {
         super();
         this.partie = partie;
         if (this.partie.getMode() == Mode.automatique) {
+            int posVaisseauLicornes = partie.getCarte().position(partie.getLicoShip().getPosition().getX(), partie.getLicoShip().getPosition().getY());
+            int posVaisseauZombies = partie.getCarte().position(partie.getZombificator().getPosition().getX(), partie.getZombificator().getPosition().getY());
+            int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
             this.scheduleAtFixedRate(new TimerTaskPartie(this.partie), 0, 1000);
+            Dijkstra licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
+            licorne.plusCourtChemin(posVaisseauLicornes, partie.getCarte().getSoleilInt());
+            this.cheminLicornes = licorne.construireChemin(posVaisseauLicornes, posLicoLand);
         }
     }
 
