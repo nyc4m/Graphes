@@ -147,6 +147,13 @@ public class Partie {
         return LicoShip;
     }
     
+    public PlaneteShadocks getShadocksLand() {
+        return ShadocksLand;
+    }
+
+    public Vaisseau getShadocks() {
+        return Shadocks;
+    }   
         //recharge la panel latéral
     public void refresh() {
         this.fenetre.refresh();
