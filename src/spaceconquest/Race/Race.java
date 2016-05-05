@@ -9,5 +9,6 @@ package spaceconquest.Race;
  */
 public enum Race {
     Zombie,
+    Shadocks,
     Licorne;
 }
