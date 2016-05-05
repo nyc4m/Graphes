@@ -102,9 +102,10 @@ public class TimerPartie extends Timer {
         private void tourDesLicornes() {
             System.out.println("Tour des Licornes !");
             if (this.partie.getModeAuto() == true) {
-                System.out.println("Vaisseau = " + this.partie.getLicoShip().getPosition().getX() + " " + this.partie.getLicoShip().getPosition().getY());
-                Couple caseActuelle = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne-1), this.partie.getCarte().getTaille());
-                Couple prochaineCase = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne), this.partie.getCarte().getTaille());
+                
+                Couple caseActuelle = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne-2), this.partie.getCarte().getTaille());
+                Couple prochaineCase = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne-1), this.partie.getCarte().getTaille());
+                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Vert);
                 partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                 this.numEtapeLicorne++;
             }
