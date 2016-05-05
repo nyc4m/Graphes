@@ -18,35 +18,15 @@ import spaceconquest.Parties.Mode;
 public class TimerPartie extends Timer {
 
     private Partie partie;        //partie en cours
-    /**
-     * contient le chemin le plus court pour atteindre les licornes
-     */
-    private ArrayList<Integer> cheminZombies;
-    /**
-     * contient le chemin le plus court pour aller sur la planete des licornes
-     */
-    private ArrayList<Integer> cheminLicornes;
-    /**
-     * Le numero du tour des licornes
-     */
-    private int numTourLicorne;
-    /**
-     * le numero du tour des zombie
-     */
-    private int numTourZombie;
 
     //constructuer    
     public TimerPartie(Partie partie) {
         super();
         this.partie = partie;
         if (this.partie.getMode() == Mode.automatique) {
-            int posVaisseauLicornes = partie.getCarte().position(partie.getLicoShip().getPosition().getX(), partie.getLicoShip().getPosition().getY());
-            int posVaisseauZombies = partie.getCarte().position(partie.getZombificator().getPosition().getX(), partie.getZombificator().getPosition().getY());
-            int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
+            
             this.scheduleAtFixedRate(new TimerTaskPartie(this.partie), 0, 1000);
-            Dijkstra licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
-            licorne.plusCourtChemin(posVaisseauLicornes, partie.getCarte().getSoleilInt());
-            this.cheminLicornes = licorne.construireChemin(posVaisseauLicornes, posLicoLand);
+            
         }
     }
 
@@ -60,9 +40,38 @@ public class TimerPartie extends Timer {
 
         private Partie partie;
 
+        /**
+         * contient le chemin le plus court pour atteindre les licornes
+         */
+        private ArrayList<Integer> cheminZombies;
+        /**
+         * contient le chemin le plus court pour aller sur la planete des
+         * licornes
+         */
+        private ArrayList<Integer> cheminLicornes;
+        /**
+         * Le numero du tour des licornes
+         */
+        private int numEtapeLicorne;
+        /**
+         * le numero du tour des zombie
+         */
+        private int numTourZombie;
+
         //constructeur
         public TimerTaskPartie(Partie partie) {
             this.partie = partie;
+            
+            int posVaisseauLicornes = partie.getCarte().position(partie.getLicoShip().getPosition().getX(), partie.getLicoShip().getPosition().getY());
+            //int posVaisseauZombies = partie.getCarte().position(partie.getZombificator().getPosition().getX(), partie.getZombificator().getPosition().getY());
+            int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
+            
+            numEtapeLicorne = 2;
+            Dijkstra licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
+            licorne.plusCourtChemin(posVaisseauLicornes, partie.getCarte().getSoleilInt());
+
+            this.cheminLicornes = new ArrayList();
+            this.cheminLicornes = licorne.construireChemin(posVaisseauLicornes, posLicoLand);
         }
 
         //fonction appellée à chaque tic du timer
@@ -92,57 +101,15 @@ public class TimerPartie extends Timer {
         //ce qu'il se passe lors du tour des licornes
         private void tourDesLicornes() {
             System.out.println("Tour des Licornes !");
-
             if (this.partie.getModeAuto() == true) {
-
-                Couple c = new Couple(partie.getLicoShip().getPosition().getX(), partie.getLicoShip().getPosition().getY());
-
-               
-
-                Dijkstra d = new Dijkstra(partie.getCarte().getGrapheLicornes());
-
-                int planeteLico = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
-                int vaisseauLico = partie.getCarte().getPosVaisseauInt(partie.getLicoShip());
-                d.plusCourtChemin(vaisseauLico, partie.getCarte().getSoleilInt());
-
-                if (d.getAntecedents().get(planeteLico) != vaisseauLico) {
-
-                    if (d.getDistances().get(planeteLico) > 2) {
-                        Dijkstra e = new Dijkstra(partie.getCarte().getGrapheLicornes());
-
-                        e.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), partie.getCarte().getSoleilInt());
-                        int i = e.getAntecedents().get(planeteLico);
-                       
-
-                        boolean fin = false;
-
-                        while (fin != true) {
-                            partie.refreshCarte();
-
-                            if (d.getDistances().get(i) <= 2) {
-                                partie.getCarte().BougerVaisseau(partie.getCarte().getCouple(vaisseauLico, partie.getCarte().getTaille()), partie.getCarte().getCouple(i, partie.getCarte().getTaille()));
-                                partie.placerLicoShipCouple(partie.getCarte().getCouple(i, partie.getCarte().getTaille()));
-                                fin = true;
-                            }
-
-                            if (d.getDistances().get(i) > 2) {
-                                i = d.getAntecedents().get(i);
-
-                            }
-
-                        }
-
-                    }
-                     if (d.getDistances().get(planeteLico) <= 2) {
-                          partie.getCarte().BougerVaisseau(partie.getCarte().getCouple(vaisseauLico, partie.getCarte().getTaille()), partie.getCarte().getCouple(planeteLico, partie.getCarte().getTaille()));
-                     }
-
-                }
-                
-                partie.getCarte().getCase(c).setCouleur(Couleur.Vert);
-            partie.refreshCarte();
+                partie.getCarte().getCase(this.partie.getLicoShip().getPosition()).setCouleur(Couleur.Vert);
+                Couple prochaineCase = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne), this.partie.getCarte().getTaille());
+                partie.getCarte().BougerVaisseau(partie.getLicoShip().getPosition(), prochaineCase);
             }
-          
+
+            
+            partie.refreshCarte();
         }
+
     }
 }
