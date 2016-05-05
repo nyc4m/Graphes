@@ -3,6 +3,7 @@
  */
 package spaceconquest;
 
+import java.util.ArrayList;
 import java.util.TimerTask;
 import java.util.Timer;
 import spaceconquest.Map.Case;
@@ -17,6 +18,22 @@ import spaceconquest.Parties.Mode;
 public class TimerPartie extends Timer {
 
     private Partie partie;        //partie en cours
+    /**
+     * contient le chemin le plus court pour atteindre les licornes
+     */
+    private ArrayList<Integer> cheminZombies;
+    /**
+     * contient le chemin le plus court pour aller sur la planete des licornes
+     */
+    private ArrayList<Integer> cheminLicornes;
+    /**
+     * Le numero du tour des licornes
+     */
+    private int numTourLicorne;
+    /**
+     * le numero du tour des zombie
+     */
+    private int numTourZombie;
 
     //constructuer    
     public TimerPartie(Partie partie) {
