@@ -22,7 +22,7 @@ public class Partie {
     private Fenetre fenetre;                                                    //Fenetre de l'IHM
     
     private Planete LicoLand;                                                   //monde d'origine des licornes
-    private Planete ShadocksLand;                                               //planète des Shadocks
+    private PlaneteShadocks ShadocksLand;                                               // planète des Shadocks
     private Vaisseau LicoShip;                                                  //Vaisseau Licorne
     private Vaisseau Zombificator;                                              //Vaisseau Zombie
     private Vaisseau Shadocks;                                              //Vaisseau Shaocks
@@ -68,7 +68,7 @@ public class Partie {
     
     //création de la planète des Shadocks
     public void placerShadocksLand(int i, int j){
-       ShadocksLand = new Planete();
+       ShadocksLand = new PlaneteShadocks();
        this.carte.addObjetCeleste(ShadocksLand, i, j);
     }
     
