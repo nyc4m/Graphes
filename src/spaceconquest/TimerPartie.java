@@ -105,6 +105,7 @@ public class TimerPartie extends Timer {
                 partie.getCarte().getCase(this.partie.getLicoShip().getPosition()).setCouleur(Couleur.Vert);
                 Couple prochaineCase = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne), this.partie.getCarte().getTaille());
                 partie.getCarte().BougerVaisseau(partie.getLicoShip().getPosition(), prochaineCase);
+                partie.placerLicoShip(prochaineCase.getX(), prochaineCase.getY());
             }
 
             
