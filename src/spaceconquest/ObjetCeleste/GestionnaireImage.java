@@ -20,6 +20,7 @@ public class GestionnaireImage {
     
     private BufferedImage fond = null;                                          //image de fond
     private BufferedImage planete = null;                                       //image de la planete
+    private BufferedImage planeteShadocks = null;                               //image de la planete des shadocks    
     private BufferedImage etoile = null;                                        //image d'une étoile
     private BufferedImage asteroide = null;                                     //image d'un astéroide
     private HashMap<Race,BufferedImage> vaisseaux;                              //images des vaisseaux
@@ -31,14 +32,17 @@ public class GestionnaireImage {
             //chargement des images en mémoire
              this.fond = ImageIO.read(SpaceConquest.class.getResource("/fond.jpg"));
              this.planete = ImageIO.read(SpaceConquest.class.getResource("/planete.png"));
+             this.planeteShadocks = ImageIO.read(SpaceConquest.class.getResource("/planeteShadocks.png"));             
              this.etoile = ImageIO.read(SpaceConquest.class.getResource("/etoile.png"));
              this.asteroide = ImageIO.read(SpaceConquest.class.getResource("/asteroide.png"));
              this.vaisseaux = new HashMap<>();
              this.vaisseaux.put(Race.Zombie, ImageIO.read(SpaceConquest.class.getResource("/vaisseauZombie.png")));
              this.vaisseaux.put(Race.Licorne, ImageIO.read(SpaceConquest.class.getResource("/vaisseauLicorne.png")));
+             this.vaisseaux.put(Race.Shadocks, ImageIO.read(SpaceConquest.class.getResource("/vaisseauShadocks.png")));
              this.joueurs = new HashMap<>();
              this.joueurs.put(Race.Zombie, ImageIO.read(SpaceConquest.class.getResource("/zombie.png")));
              this.joueurs.put(Race.Licorne, ImageIO.read(SpaceConquest.class.getResource("/licorne.png")));
+             this.joueurs.put(Race.Shadocks, ImageIO.read(SpaceConquest.class.getResource("/shadocks.png")));
         }
         catch (IOException e) {
             //gestion d'erreur
