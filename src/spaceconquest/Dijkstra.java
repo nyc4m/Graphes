@@ -221,7 +221,12 @@ public class Dijkstra  {
             }
         }
     }
-    
+    /**
+     * Genere un tableau contenant "l'itineraire" le plus court pour aller de sommetDep a sommet
+     * @param sommetDep le sommet de depart
+     * @param sommet le sommet d'arrivee
+     * @return Retourne un ArrayList contenant l'itineraire
+     */
     public ArrayList<Integer> construireChemin(int sommetDep, int sommet){
         ArrayList<Integer> res = new ArrayList();
         if(this.antecedents.get(sommet) != -1){
