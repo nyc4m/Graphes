@@ -51,11 +51,24 @@ public class TimerPartie extends Timer {
                     case Zombie:
                         this.tourDesZombies();
                         break;
+                    case Shadocks:
+                        this.tourDesShadocks();
+                        break;                    
                 }
                 this.partie.tourSuivant();
             }
         }
-
+        
+        //ce qu'il se passe lors du tour des shadocks
+        private void tourDesShadocks() {
+            System.out.println("Tour des Shadocks !");
+            
+            if (this.partie.getModeAuto() == true) {
+                partie.getCarte().effacerColoration();
+                partie.refresh();
+            }
+        }
+        
         //ce qu'il se passe lors du tour des zombies
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
