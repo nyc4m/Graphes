@@ -67,6 +67,10 @@ public class GestionnaireImage {
     public BufferedImage getImagePlanete() {
         return this.planete;
     }
+    //getteur de l'image de la planete des shadocks
+    public BufferedImage getImagePlaneteShadock() {
+        return this.planeteShadocks;
+    }
     //getteur de l'image d'un astéroide
     public BufferedImage getImageAsteroide() {
         return this.asteroide;
