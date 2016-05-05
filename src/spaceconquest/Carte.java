@@ -99,8 +99,6 @@ public class Carte {
         }
     }
 
-    
-
 //fait bouger le vaisseau présent en case départ à la case arrivée (détruisant tout vaisseau présent à cette case)
     public void BougerVaisseau(Couple depart, Couple arrivee) {
         if (this.getCase(depart).getVaisseau() == null) {
@@ -117,20 +115,18 @@ public class Carte {
 
 //méthode gérant ce qu'il se passe quand on clique sur une case en mode manuel
     public void selectionCase(Couple c) {
-        
+
         //on stocke le numero du sommet pour le chercher dans le tableau
         int numCase = this.position(c.getX(), c.getY());
         //on regarde si la distance pour aller au sommet est au plus 2        
-        boolean caseOk = this.tabDistances.get(numCase) <= 2;         
-        
+        boolean caseOk = this.tabDistances.get(numCase) <= 2;
+
         if (c.equals(this.caseSelectionnee)) {
             //deselection de la case
             this.getCase(c).setCouleur(Couleur.Blanc);
             this.caseSelectionnee = null;
         } else //si une case avait déja été sélectionnée
-            
         {
-            
             if (this.caseSelectionnee != null && caseOk) {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
@@ -291,8 +287,16 @@ public class Carte {
     public Couple getSoleil() {
         return soleil;
     }
-    
 
+    /**
+     *Méthode retournant le sommet où se trouve lse soleil
+     * @return La position
+     */
+    public int getSoleilInt() {
+
+        int position = this.position(getSoleil().getX(), getSoleil().getY());
+        return position;
+    }
 
     /**
      * Permet de colorer tout la carte en blanc
@@ -310,7 +314,6 @@ public class Carte {
         }
     }
 
-
     /**
      * Métohde permettant d'obtenir la position du vaisseau
      *
@@ -323,12 +326,12 @@ public class Carte {
 
         return c;
     }
-    
-        public int getPosVaisseauInt(Vaisseau v) {
+
+    public int getPosVaisseauInt(Vaisseau v) {
 
         int position = this.position(v.getPosition().getX(), v.getPosition().getY());
 
-        return position ;
+        return position;
     }
 
     /**
@@ -366,8 +369,8 @@ public class Carte {
         // on récupère la position du vaisseau passé  en paramètre
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
-        d.plusCourtChemin(position, this.position(this.soleil.getX(), this.soleil.getY()));
-        this.tabDistances = d.getDistances();
+        d.plusCourtChemin(position, this.getSoleilInt());
+ 
         //parcour du tableau des distances
         for (int i = 1; i <= d.getDistances().size() - 1; i++) {
             // Si la diastance est de 1 on colorie en vert
