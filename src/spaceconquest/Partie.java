@@ -107,11 +107,16 @@ public class Partie {
     
     //passe le tour (dans les deux modes de jeu)
     public void tourSuivant() {
-        if(tour == Race.Zombie) {
-            tour = Race.Licorne;
+        if(tour == Race.Licorne) {
+            tour = Race.Zombie;
         }
         else {
-            tour = Race.Zombie;
+                    if(tour == Race.Zombie) {
+            tour = Race.Shadocks;
+                    }
+                    else {
+                        tour = Race.Licorne;
+                    }
         }
         this.fenetre.refreshCarte();
         
