@@ -22,8 +22,10 @@ public class Partie {
     private Fenetre fenetre;                                                    //Fenetre de l'IHM
     
     private Planete LicoLand;                                                   //monde d'origine des licornes
+    private Planete ShadocksLand;                                               //planète des Shadocks
     private Vaisseau LicoShip;                                                  //Vaisseau Licorne
     private Vaisseau Zombificator;                                              //Vaisseau Zombie
+    private Vaisseau Shadocks;                                              //Vaisseau Shaocks
    
     private TimerPartie timer;                                                  //timer pour le mode automatique
     
@@ -36,6 +38,8 @@ public class Partie {
         this.LicoLand = null;
         this.LicoShip = null;
         this.Zombificator = null;
+        this.Shadocks = null;
+        this.ShadocksLand = null;        
     }
     
     //création de LicoLand 
@@ -54,6 +58,18 @@ public class Partie {
     public void placerZombificator(int i,int j) {
         this.Zombificator = new Vaisseau(Race.Zombie);
         this.carte.addVaisseau(Zombificator, i, j);
+    }
+
+    //création du vaisseau des Shadocks
+    public void placerShadocksShip(int i, int j){
+        this.Shadocks = new Vaisseau(Race.Shadocks);
+        this.carte.addVaisseau(Shadocks, i, j);
+    }
+    
+    //création de la planète des Shadocks
+    public void placerShadocksLand(int i, int j){
+       ShadocksLand = new Planete();
+       this.carte.addObjetCeleste(ShadocksLand, i, j);
     }
     
     //création d'objet céleste
