@@ -221,6 +221,27 @@ public class Dijkstra  {
             }
         }
     }
+    
+    public ArrayList<Integer> construireChemin(int sommetDep, int sommet){
+        ArrayList<Integer> res = new ArrayList();
+        if(this.antecedents.get(sommet) != -1){
+            res = this.construireChemin(sommetDep,this.antecedents.get(sommet));
+            res.add(sommet);
+        }else{
+           res.add(sommetDep);
+        }
+        
+        return res;
+    }
+    
+    public String afficherChemin(int sommetDep, int sommetArr){
+        String str = "";
+        for(int e : this.construireChemin(sommetDep, sommetArr)){
+            str += e + " ";
+        }
+        
+        return str;
+    }
 
     
     //////////////////////ACCESSEURS//////////////////////////////
