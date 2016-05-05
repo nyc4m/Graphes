@@ -5,6 +5,8 @@ package spaceconquest;
 
 import java.util.TimerTask;
 import java.util.Timer;
+import spaceconquest.Map.Case;
+import spaceconquest.Map.Couleur;
 import spaceconquest.Map.Couple;
 import spaceconquest.Parties.Mode;
 
@@ -60,20 +62,64 @@ public class TimerPartie extends Timer {
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
             if (this.partie.getModeAuto() == true) {
-              
+
             }
         }
 
         //ce qu'il se passe lors du tour des licornes
         private void tourDesLicornes() {
             System.out.println("Tour des Licornes !");
-            
 
-            if (this.partie.getModeAuto() == true) 
-                partie.getCarte().effacerColoration();
-                partie.refresh();
-                   
+            if (this.partie.getModeAuto() == true) {
+
+                Couple c = new Couple(partie.getLicoShip().getPosition().getX(), partie.getLicoShip().getPosition().getY());
+
+               
+
+                Dijkstra d = new Dijkstra(partie.getCarte().getGrapheLicornes());
+
+                int planeteLico = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
+                int vaisseauLico = partie.getCarte().getPosVaisseauInt(partie.getLicoShip());
+                d.plusCourtChemin(vaisseauLico, partie.getCarte().getSoleilInt());
+
+                if (d.getAntecedents().get(planeteLico) != vaisseauLico) {
+
+                    if (d.getDistances().get(planeteLico) > 2) {
+                        Dijkstra e = new Dijkstra(partie.getCarte().getGrapheLicornes());
+
+                        e.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), partie.getCarte().getSoleilInt());
+                        int i = e.getAntecedents().get(planeteLico);
+                       
+
+                        boolean fin = false;
+
+                        while (fin != true) {
+                            partie.refreshCarte();
+
+                            if (d.getDistances().get(i) <= 2) {
+                                partie.getCarte().BougerVaisseau(partie.getCarte().getCouple(vaisseauLico, partie.getCarte().getTaille()), partie.getCarte().getCouple(i, partie.getCarte().getTaille()));
+                                partie.placerLicoShipCouple(partie.getCarte().getCouple(i, partie.getCarte().getTaille()));
+                                fin = true;
+                            }
+
+                            if (d.getDistances().get(i) > 2) {
+                                i = d.getAntecedents().get(i);
+
+                            }
+
+                        }
+
+                    }
+                     if (d.getDistances().get(planeteLico) <= 2) {
+                          partie.getCarte().BougerVaisseau(partie.getCarte().getCouple(vaisseauLico, partie.getCarte().getTaille()), partie.getCarte().getCouple(planeteLico, partie.getCarte().getTaille()));
+                     }
+
+                }
+                
+                partie.getCarte().getCase(c).setCouleur(Couleur.Vert);
+            partie.refreshCarte();
             }
+          
         }
     }
-
+}
