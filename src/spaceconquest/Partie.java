@@ -10,6 +10,7 @@ import spaceconquest.ObjetCeleste.Planete;
 import spaceconquest.Parties.Mode;
 import spaceconquest.Race.Race;
 import spaceconquest.Race.Vaisseau;
+import spaceconquest.ObjetCeleste.PlaneteShadocks;
 
 /**
  *
