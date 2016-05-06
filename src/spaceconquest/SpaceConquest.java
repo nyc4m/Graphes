@@ -29,26 +29,33 @@ public class SpaceConquest {
     }
 
     public static void main(String[] args) {
-        //on cree la partie
+       //on cree la partie
         partie = new Partie(5);
 
-        /*//ajout des éléments clé de la partie
+        //ajout des éléments clé de la partie
         partie.placerLicoLand(2, 2);
         partie.placerLicoShip(5, 5);
-        partie.placerZombificator(10, 3);
+        partie.placerZombificator(12, 3);
+        partie.placerShadocksLand(2, 3);
+        partie.placerShadocksShip(10, 3);
         
-         *///placement des objets célestes
+         //placement des objets célestes
         partie.placerObjetCeleste(new Etoile(), 3, 3);
-        /*partie.placerObjetCeleste(new Asteroide(), 4, 4);
+        partie.placerObjetCeleste(new Asteroide(), 4, 4);
         partie.placerObjetCeleste(new Asteroide(), 5, 4);
         partie.placerObjetCeleste(new Asteroide(), 5, 3);
                 
         //on definit le mode de jeu
-        partie.setMode(Mode.manuel);*/
+        partie.setMode(Mode.manuel);
         //on lance l'IHM
-        System.out.println(partie.getCarte().getSoleil().getX() + " " + partie.getCarte().getSoleil().getX());
-        System.out.println(partie.getCarte().getGrapheGrille());
-        //partie.start();
+        /*System.out.println(partie.getCarte().getSoleil().getX() + " " + partie.getCarte().getSoleil().getX());
+        System.out.println(partie.getCarte().getGrapheGrille());*/
+
+        partie.start();
+        
+
+        partie.tourSuivant();
+                partie.tourSuivant();
     }
 
 }
