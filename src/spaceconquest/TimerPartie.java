@@ -82,13 +82,14 @@ public class TimerPartie extends Timer {
                 Couple caseActuelle = partie.getShadocks().getPosition();
                 int posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY());
                 int posShadockVaisseau = partie.getCarte().getPosVaisseauInt(partie.getShadocks());
+                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
 
                 while (fini != true) {
                     randomGenerator = new Random();
                     int index = randomGenerator.nextInt(cheminShadock.size());
                     int sommet = cheminShadock.get(index);
                     
-                    Dijkstra d = new Dijkstra(partie.getCarte().getGrapheLicornes());
+                    Dijkstra d = new Dijkstra(partie.getCarte().getGrapheGrille());
                     d.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
                     
                     
@@ -118,7 +119,7 @@ public class TimerPartie extends Timer {
             System.out.println("Tour des Licornes !");
 
             if (this.partie.getModeAuto() == true) {
-                partie.getCarte().effacerColoration();
+                
             }
             partie.refresh();
 
