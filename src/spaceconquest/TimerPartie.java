@@ -82,6 +82,7 @@ public class TimerPartie extends Timer {
                 Couple caseActuelle = partie.getShadocks().getPosition();
                 int posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY());
                 int posShadockVaisseau = partie.getCarte().getPosVaisseauInt(partie.getShadocks());
+                int posLicoland = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
                 partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
 
                 while (fini != true) {
@@ -93,7 +94,7 @@ public class TimerPartie extends Timer {
                     d.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
                     
                     
-                    if (d.getDistances().get(sommet) <= 1 && sommet != posShadockPlanete && sommet != posShadockVaisseau) {
+                    if (d.getDistances().get(sommet) <= 1 && sommet != posShadockPlanete && sommet != posShadockVaisseau && sommet != posLicoland) {
                   
                         Couple prochaineCase = partie.getCarte().getCouple(sommet, partie.getCarte().getTaille());
                         partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
