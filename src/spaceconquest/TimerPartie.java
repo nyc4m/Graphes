@@ -24,9 +24,9 @@ public class TimerPartie extends Timer {
         super();
         this.partie = partie;
         if (this.partie.getMode() == Mode.automatique) {
-            
+
             this.scheduleAtFixedRate(new TimerTaskPartie(this.partie), 0, 1000);
-            
+
         }
     }
 
@@ -57,21 +57,40 @@ public class TimerPartie extends Timer {
          * le numero du tour des zombie
          */
         private int numTourZombie;
+        /**
+         * Contient le Dijkstra des différentes races
+         */
+        private Dijkstra licorne;
+        private Dijkstra zombie;
 
         //constructeur
         public TimerTaskPartie(Partie partie) {
             this.partie = partie;
-            
-            int posVaisseauLicornes = partie.getCarte().position(partie.getLicoShip().getPosition().getX(), partie.getLicoShip().getPosition().getY());
-            //int posVaisseauZombies = partie.getCarte().position(partie.getZombificator().getPosition().getX(), partie.getZombificator().getPosition().getY());
+
+            int posVaisseauLicornes = partie.getCarte().getPosVaisseauInt(partie.getLicoShip());
+            int posVaisseauZombies = partie.getCarte().getPosVaisseauInt(partie.getZombificator());
             int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
-            
+
             numEtapeLicorne = 2;
-            Dijkstra licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
+            numTourZombie = 2;
+            
+             licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
+             zombie = new Dijkstra(partie.getCarte().getGrapheZombie());
+           
             licorne.plusCourtChemin(posVaisseauLicornes, partie.getCarte().getSoleilInt());
+            
+           
 
             this.cheminLicornes = new ArrayList();
+            this.cheminZombies = new ArrayList();
             this.cheminLicornes = licorne.construireChemin(posVaisseauLicornes, posLicoLand);
+            zombie.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), partie.getCarte().getSoleilInt());           
+            
+                                          
+                                
+                
+                
+
         }
 
         //fonction appellée à chaque tic du timer
@@ -94,6 +113,19 @@ public class TimerPartie extends Timer {
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
             if (this.partie.getModeAuto() == true) {
+                
+                zombie = new Dijkstra(partie.getCarte().getGrapheZombie());
+                zombie.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()),  partie.getCarte().getSoleilInt());                     
+               
+                this.cheminZombies = zombie.construireChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), partie.getCarte().getPosVaisseauInt(partie.getLicoShip()));
+                
+                Couple caseActuelle = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie-2 ), this.partie.getCarte().getTaille());
+                Couple prochaineCase = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie -1), this.partie.getCarte().getTaille());
+                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
+                partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
+                partie.getZombificator().setPosition(prochaineCase);
+               
+              
 
             }
         }
@@ -102,15 +134,16 @@ public class TimerPartie extends Timer {
         private void tourDesLicornes() {
             System.out.println("Tour des Licornes !");
             if (this.partie.getModeAuto() == true) {
-                
-                Couple caseActuelle = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne-2), this.partie.getCarte().getTaille());
-                Couple prochaineCase = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne-1), this.partie.getCarte().getTaille());
+
+                Couple caseActuelle = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne - 2), this.partie.getCarte().getTaille());
+                Couple prochaineCase = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne - 1), this.partie.getCarte().getTaille());
                 partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Vert);
                 partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
+                partie.getLicoShip().setPosition(prochaineCase);
                 this.numEtapeLicorne++;
+
             }
 
-            
             partie.refreshCarte();
         }
 
