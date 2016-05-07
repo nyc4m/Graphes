@@ -73,7 +73,6 @@ public class Carte {
 
             } else if (obj.getType().equals("asteroide")) {
                 this.asteroides.add(c);
-                this.setGrapheLicornes();
             }
             obj.setPosition(c);
             this.actualiser();
@@ -84,7 +83,7 @@ public class Carte {
      * Permet d'actualiser la carte lors de l'ajout d'un objet
      */
     public void actualiser() {
-        
+
         this.setGrapheZombie();
         this.setGrapheLicornes();
     }
@@ -118,8 +117,7 @@ public class Carte {
             this.getCase(c).setCouleur(Couleur.Blanc);
             this.caseSelectionnee = null;
         } else //si une case avait déja été sélectionnée
-        {
-            if (this.caseSelectionnee != null) {
+         if (this.caseSelectionnee != null) {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
                 this.BougerVaisseau(this.caseSelectionnee, c);
@@ -130,16 +128,13 @@ public class Carte {
                 SpaceConquest.tourSuivant();
             } else //si aucune case n'avait été selectionné
             //on vérifie que la case nouvellement sélectionné contient un vaisseau du joueur en cours
-            {
-                if (this.getCase(c).getVaisseau() != null) {
+             if (this.getCase(c).getVaisseau() != null) {
                     if (this.getCase(c).getVaisseau().getRace() == SpaceConquest.getTour()) {
                         //on selectionne la case
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
                     }
                 }
-            }
-        }
     }
 
     /**
@@ -256,7 +251,7 @@ public class Carte {
                 //pour chaque boucle, la position de l'astéroide est calculée
                 int _asteroide = this.position(this.asteroides.get(i).getX(), this.asteroides.get(i).getY());
                 //le graphe est parcouru ligne par ligne, et tous les 1 sont changés par des deux
-                for (int j = 1; j <= this.taille * 3; j++) {
+                for (int j = 1; j <= this.taille * 3 * this.taille; j++) {
                     if (this.grapheLicornes.getMatrice(_asteroide, j) == 1) {
                         this.grapheLicornes.modifierMatrice(_asteroide, j, 2);
                     }
