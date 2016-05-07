@@ -221,6 +221,25 @@ public class Dijkstra  {
             }
         }
     }
+    
+    
+      public ArrayList<Integer> cheminShadock(int sommet,int soleil){
+        ArrayList<Integer> res = new ArrayList();
+        this.plusCourtChemin(sommet,soleil);
+        for (int i=1; i<=this.sommets.size()-1;i++){
+            
+        
+        if(this.distances.get(i)<= 3){
+            
+            res.add(i);
+        }
+        
+        
+        }
+        return res;
+    }
+      
+      
 
     
     //////////////////////ACCESSEURS//////////////////////////////
