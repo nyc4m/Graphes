@@ -85,18 +85,28 @@ public class TimerPartie extends Timer {
 
         }
 
+        /**
+         * Methode permettant de calculer le chemin le plus court entre tous les
+         * couple de sommets du graphe Utile pour calculer le chemin le plus
+         * court entre le vaisseau des zombies et celui des licornes. Le calcul
+         * est ainsi effectue une seule fois et il suffit de lire dans la
+         * hashMap le chemin le plus court entre deux sommets specifiques.
+         *
+         * @return
+         */
         public HashMap<Couple, ArrayList> cheminsZombies() {
             HashMap<Couple, ArrayList> res = new HashMap();
             for (int i = 1; i <= this.partie.getCarte().getGrapheZombie().getNbSommet(); i++) {
                 for (int j = 1; j <= this.partie.getCarte().getGrapheZombie().getNbSommet(); j++) {
+
+                    //On verifie que le point de depart n'est pas le soleil, puisqu'on ne peut aller nul part depuis le soleil
                     if (i != this.partie.getCarte().getSoleilInt()) {
                         Couple c = new Couple(i, j);
                         Dijkstra chemin = new Dijkstra(this.partie.getCarte().getGrapheZombie());
                         chemin.plusCourtChemin(i, this.partie.getCarte().getSoleilInt());
                         res.put(c, chemin.construireChemin(i, j));
                         int sommet = j + (i * this.partie.getCarte().getTaille()) - this.partie.getCarte().getTaille();
-                        System.out.println("sommet = " + sommet);
-                        System.out.println("  chemin = " + chemin.afficherChemin(i, j));
+                        System.out.println("fini = " + i * j + "/" + this.partie.getCarte().getGrapheZombie().getNbSommet());
                     }
                 }
             }
@@ -120,15 +130,20 @@ public class TimerPartie extends Timer {
             }
         }
 
-        //ce qu'il se passe lors du tour des zombies
+        /**
+         * A chaque tour, om lit dans la hashMap le chemin le plus court entre
+         * le vaisseau des licornes et celui des zombies
+         */
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
             if (this.partie.getModeAuto() == true) {
 
                 Couple c = new Couple(this.partie.getCarte().getPosVaisseauInt(this.partie.getZombificator()), this.partie.getCarte().getPosVaisseauInt(this.partie.getLicoShip()));
-                System.out.println("c = " + c.getX() + "/" + c.getY());
+
                 ArrayList<Integer> chemin = this.cheminZombies.get(c);
+                //A l'indice 0 est contenu la position actuelle du vaisseau des zombies
                 Couple caseActuelle = partie.getCarte().getCouple(chemin.get(0), this.partie.getCarte().getTaille());
+                //A l'indice 1 est contenu la prochaine case a atteindre
                 Couple prochaineCase = partie.getCarte().getCouple(chemin.get(1), this.partie.getCarte().getTaille());
                 this.partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Jaune);
                 this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
