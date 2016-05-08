@@ -4,6 +4,7 @@
 package spaceconquest;
 
 import spaceconquest.IHM.Fenetre;
+import spaceconquest.Map.Couple;
 import spaceconquest.TimerPartie;
 import spaceconquest.ObjetCeleste.ObjetCeleste;
 import spaceconquest.ObjetCeleste.Planete;
@@ -48,6 +49,12 @@ public class Partie {
     public void placerLicoShip(int i,int j) {
         this.LicoShip = new Vaisseau(Race.Licorne);
         this.carte.addVaisseau(LicoShip, i, j);
+    }
+    
+        //création du LicoShip 
+    public void placerLicoShipCouple(Couple c) {
+        this.LicoShip = new Vaisseau(Race.Licorne);
+        this.carte.addVaisseau(LicoShip, c.getX(), c.getY());
     }
     
     //création du Zombificator 
@@ -129,6 +136,10 @@ public class Partie {
         //recharge la panel latéral
     public void refresh() {
         this.fenetre.refresh();
+    }  
+    
+    public void refreshCarte() {
+        this.fenetre.refreshCarte();
     }
     
 }

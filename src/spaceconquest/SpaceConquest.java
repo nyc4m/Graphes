@@ -38,7 +38,7 @@ public class SpaceConquest {
         partie.placerZombificator(10, 3);
         
          *///placement des objets célestes
-        partie.placerObjetCeleste(new Etoile(), 3, 3);
+        partie.placerObjetCeleste(new Etoile(), 1, 2);
         /*partie.placerObjetCeleste(new Asteroide(), 4, 4);
         partie.placerObjetCeleste(new Asteroide(), 5, 4);
         partie.placerObjetCeleste(new Asteroide(), 5, 3);
@@ -46,9 +46,15 @@ public class SpaceConquest {
         //on definit le mode de jeu
         partie.setMode(Mode.manuel);*/
         //on lance l'IHM
+        partie.setMode(Mode.automatique);
+        partie.placerLicoLand(12, 2);
+        partie.placerLicoShip(1, 1);
         System.out.println(partie.getCarte().getSoleil().getX() + " " + partie.getCarte().getSoleil().getX());
-        System.out.println(partie.getCarte().getGrapheGrille());
-        //partie.start();
+        //System.out.println(partie.getCarte().getGrapheGrille());
+        Dijkstra d = new Dijkstra(partie.getCarte().getGrapheZombie());
+        d.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), partie.getCarte().getSoleilInt());
+        d.afficheTableaux();
+        partie.start();
     }
 
 }

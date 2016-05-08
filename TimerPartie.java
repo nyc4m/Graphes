@@ -121,7 +121,7 @@ public class TimerPartie extends Timer {
                 
                 Couple caseActuelle = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie-2 ), this.partie.getCarte().getTaille());
                 Couple prochaineCase = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie -1), this.partie.getCarte().getTaille());
-                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Jaune);
+                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
                 partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                 partie.getZombificator().setPosition(prochaineCase);
                
