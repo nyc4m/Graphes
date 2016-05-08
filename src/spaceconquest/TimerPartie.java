@@ -90,7 +90,7 @@ public class TimerPartie extends Timer {
                     int index = randomGenerator.nextInt(cheminShadock.size());
                     int sommet = cheminShadock.get(index);
                     
-                    Dijkstra d = new Dijkstra(partie.getCarte().getGrapheGrille());
+                    Dijkstra d = new Dijkstra(partie.getCarte().getGrapheZombie());
                     d.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
                     
                     
