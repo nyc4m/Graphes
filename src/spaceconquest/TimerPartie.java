@@ -73,43 +73,36 @@ public class TimerPartie extends Timer {
             int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
 
             numEtapeLicorne = 2;
-            
-            
-             licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
-             
-           
+
+            licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
+
             licorne.plusCourtChemin(posVaisseauLicornes, partie.getCarte().getSoleilInt());
-            
-           
 
             this.cheminLicornes = new ArrayList();
-            
+
             this.cheminLicornes = licorne.construireChemin(posVaisseauLicornes, posLicoLand);
-            this.cheminZombies = this.cheminsZombies();          
-            
-                                          
-                                
-                
-                
+            this.cheminZombies = this.cheminsZombies();
 
         }
-        
-        public HashMap<Couple, ArrayList> cheminsZombies(){
+
+        public HashMap<Couple, ArrayList> cheminsZombies() {
             HashMap<Couple, ArrayList> res = new HashMap();
-            for(int i = 1; i <= this.partie.getCarte().getGrapheZombie().getNbSommet(); i++){
-                for(int j = 1; j<= this.partie.getCarte().getGrapheZombie().getNbSommet(); j++){
-                    Couple c = new Couple (i, j);
-                    Dijkstra chemin = new Dijkstra(this.partie.getCarte().getGrapheZombie());
-                    chemin.plusCourtChemin(i, this.partie.getCarte().getSoleilInt());
-                    res.put(c, chemin.construireChemin(i, j));
-                    int sommet =j+(i*this.partie.getCarte().getTaille())-this.partie.getCarte().getTaille();
-                    System.out.println("sommet = " + sommet);
-                    System.out.println("  chemin = " +   chemin.afficherChemin(i, j));
+            for (int i = 1; i <= this.partie.getCarte().getGrapheZombie().getNbSommet(); i++) {
+                for (int j = 1; j <= this.partie.getCarte().getGrapheZombie().getNbSommet(); j++) {
+                    if (i != this.partie.getCarte().getSoleilInt()) {
+                        Couple c = new Couple(i, j);
+                        Dijkstra chemin = new Dijkstra(this.partie.getCarte().getGrapheZombie());
+                        chemin.plusCourtChemin(i, this.partie.getCarte().getSoleilInt());
+                        res.put(c, chemin.construireChemin(i, j));
+                        int sommet = j + (i * this.partie.getCarte().getTaille()) - this.partie.getCarte().getTaille();
+                        System.out.println("sommet = " + sommet);
+                        System.out.println("  chemin = " + chemin.afficherChemin(i, j));
+                    }
                 }
             }
+            boolean ok = true;
             return res;
         }
-        
 
         //fonction appellée à chaque tic du timer
         @Override
@@ -131,7 +124,7 @@ public class TimerPartie extends Timer {
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
             if (this.partie.getModeAuto() == true) {
-                
+
                 Couple c = new Couple(this.partie.getCarte().getPosVaisseauInt(this.partie.getZombificator()), this.partie.getCarte().getPosVaisseauInt(this.partie.getLicoShip()));
                 System.out.println("c = " + c.getX() + "/" + c.getY());
                 ArrayList<Integer> chemin = this.cheminZombies.get(c);
@@ -140,7 +133,6 @@ public class TimerPartie extends Timer {
                 this.partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Jaune);
                 this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                 this.partie.getZombificator().setPosition(prochaineCase);
-              
 
             }
         }
