@@ -96,6 +96,7 @@ public class TimerPartie extends Timer {
          */
         public HashMap<Couple, ArrayList> cheminsZombies() {
             HashMap<Couple, ArrayList> res = new HashMap();
+            int avancement = 1;
             for (int i = 1; i <= this.partie.getCarte().getGrapheZombie().getNbSommet(); i++) {
                 for (int j = 1; j <= this.partie.getCarte().getGrapheZombie().getNbSommet(); j++) {
 
@@ -106,7 +107,9 @@ public class TimerPartie extends Timer {
                         chemin.plusCourtChemin(i, this.partie.getCarte().getSoleilInt());
                         res.put(c, chemin.construireChemin(i, j));
                         int sommet = j + (i * this.partie.getCarte().getTaille()) - this.partie.getCarte().getTaille();
-                        System.out.println("fini = " + i * j + "/" + this.partie.getCarte().getGrapheZombie().getNbSommet());
+                        
+                        System.out.println("fini = " + avancement + "/" + this.partie.getCarte().getGrapheZombie().getNbSommet()*this.partie.getCarte().getGrapheZombie().getNbSommet());
+                        avancement++;
                     }
                 }
             }
