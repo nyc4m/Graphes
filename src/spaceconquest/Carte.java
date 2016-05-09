@@ -130,7 +130,7 @@ public class Carte {
         //on stocke le numero du sommet pour le chercher dans le tableau
         int numCase = this.position(c.getX(), c.getY());
         //on regarde si la distance pour aller au sommet est au plus 2        
-        boolean caseOk = this.tabDistances.get(numCase) <= 2;
+        boolean caseOk = d.getDistances().get(numCase) <= 2;
 
         if (c.equals(this.caseSelectionnee)) {
             //deselection de la case
