@@ -136,6 +136,7 @@ public class Carte {
             //deselection de la case
             this.getCase(c).setCouleur(Couleur.Blanc);
             this.caseSelectionnee = null;
+            this.effacerColoration();
         } else //si une case avait déja été sélectionnée
         {
             if (this.caseSelectionnee != null && caseOk) {
