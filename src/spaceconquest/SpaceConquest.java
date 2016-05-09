@@ -28,19 +28,23 @@ public class SpaceConquest {
     public static void tourSuivant() {
         partie.tourSuivant();
     }
-     
-    
-    
+
     public static void main(String[] args) {
         //on cree la partie
         partie = new Partie(5);
 
-        partie.setMode(Mode.manuel);
+
+        partie.setMode(Mode.automatique);
         
-        partie.placerLicoLand(15, 5);
-        partie.placerObjetCeleste(new Etoile(), 7   , 3);
-        partie.placerZombificator(15, 1);
-        partie.placerLicoShip(1, 5);
+        partie.placerLicoShip(1, 2);
+        partie.placerLicoLand(15, 3);
+        
+        partie.placerZombificator(1, 5);
+        partie.getCarte().addObjetCeleste(new Etoile(), 3, 2);
+        
+        partie.placerShadocksShip(10, 1);
+        partie.placerShadocksLand(10, 2);
+
         
         partie.start();
     }

@@ -126,6 +126,7 @@ public class Partie {
             tour = Race.Licorne;
         }
         this.fenetre.refreshCarte();
+        this.fenetre.refreshSide();
 
     }
 
