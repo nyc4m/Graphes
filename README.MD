@@ -22,5 +22,5 @@ Quelques liens :
 ----------------
 [Git kraken](https://www.gitkraken.com/) pour voir les différentes branches du projet ;)
 
-[Git scm](https://git-scm.com/) pour apprendre git en ligne de commende (ce qui n'est vraiment pas compliqué je vous assure :) )
+[Git scm](https://git-scm.com/) pour apprendre git en ligne de commande (ce qui n'est vraiment pas compliqué je vous assure :) )
 
