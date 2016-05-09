@@ -126,7 +126,7 @@ public class Carte {
         
         d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
         
-        this.colorationMouvement(d.getGraphe(), c);
+        
         //on stocke le numero du sommet pour le chercher dans le tableau
         int numCase = this.position(c.getX(), c.getY());
         //on regarde si la distance pour aller au sommet est au plus 2        
@@ -146,6 +146,7 @@ public class Carte {
                 this.getCase(this.caseSelectionnee).setCouleur(Couleur.Blanc);
                 this.caseSelectionnee = null;
                 //on passe le tour
+                this.effacerColoration();
                 SpaceConquest.tourSuivant();
             } else //si aucune case n'avait été selectionné
             //on vérifie que la case nouvellement sélectionné contient un vaisseau du joueur en cours
@@ -153,12 +154,16 @@ public class Carte {
                 if (this.getCase(c).getVaisseau() != null) {
                     if (this.getCase(c).getVaisseau().getRace() == SpaceConquest.getTour()) {
                         //on selectionne la case
+                        
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
+                        this.colorationMouvement(d.getGraphe(), c);
                     }
                 }
             }
         }
+        
+        
     }
 
     /**
