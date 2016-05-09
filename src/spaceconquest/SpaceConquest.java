@@ -35,32 +35,13 @@ public class SpaceConquest {
         //on cree la partie
         partie = new Partie(5);
 
-        /*//ajout des éléments clé de la partie
-        partie.placerLicoLand(2, 2);
-        partie.placerLicoShip(5, 5);
-        partie.placerZombificator(10, 3);
+        partie.setMode(Mode.manuel);
         
-         *///placement des objets célestes
-        partie.placerObjetCeleste(new Etoile(), 1, 2);
-        /*partie.placerObjetCeleste(new Asteroide(), 4, 4);
-        partie.placerObjetCeleste(new Asteroide(), 5, 4);
-        partie.placerObjetCeleste(new Asteroide(), 5, 3);
-                
-        //on definit le mode de jeu
-        partie.setMode(Mode.manuel);*/
-        //on lance l'IHM
+        partie.placerLicoLand(15, 5);
+        partie.placerObjetCeleste(new Etoile(), 7   , 3);
+        partie.placerZombificator(15, 1);
+        partie.placerLicoShip(1, 5);
         
-       partie.setMode(Mode.automatique);
-         partie.placerLicoLand(2, 2);
-         partie.placerShadocksLand(8, 2);
-         partie.placerShadocksShip(10, 2);
-        System.out.println(partie.getCarte().getSoleil().getX() + " " + partie.getCarte().getSoleil().getX());
-        System.out.println(partie.getCarte().getGrapheGrille());
-        Dijkstra d = new Dijkstra(partie.getCarte().getGrapheLicornes());
-       
- ArrayList<Integer>cheminLicornes = new ArrayList();
-       cheminLicornes = d.cheminShadock(partie.getCarte().position(partie.getShadocksLand().getPosition().getX(),partie.getShadocksLand().getPosition().getY()),  partie.getCarte().getSoleilInt());
-       System.out.println(cheminLicornes );
         partie.start();
     }
 
