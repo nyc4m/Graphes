@@ -123,17 +123,19 @@ public class Carte {
         } else {
             d = new Dijkstra(this.getGrapheZombie());
         }
-
+        
+        //On calcule le plus court chemin pour parcourir le graphe a partir de l'endroit cliqué
         d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
 
         //on stocke le numero du sommet pour le chercher dans le tableau
         int numCase;
+        //si un case a été séléctionnée, on récupère son numéro
         if (this.caseSelectionnee != null) {
             numCase = this.position(this.caseSelectionnee.getX(), this.caseSelectionnee.getY());
-        } else {
+        } else { //Sinon on considère que la case 0 est séléctionnée, ce qui veut dire qu'aucune case n'est séléctionnée
             numCase = 0;
         }
-        //on regarde si la distance pour aller au sommet est au plus 2        
+        //On verifie que la distance de la case cliquée au vaisseau est au maximum de 2       
         boolean caseOk = d.getDistances().get(numCase) <= 2;
 
         if (c.equals(this.caseSelectionnee)) {
@@ -284,7 +286,7 @@ public class Carte {
                 //pour chaque boucle, la position de l'astéroide est calculée
                 int _asteroide = this.position(this.asteroides.get(i).getX(), this.asteroides.get(i).getY());
                 //le graphe est parcouru ligne par ligne, et tous les 1 sont changés par des deux
-                for (int j = 1; j <= this.taille * 3; j++) {
+                for (int j = 1; j <= this.taille * 3 * this.taille; j++) {
                     if (this.grapheLicornes.getMatrice(_asteroide, j) == 1) {
                         this.grapheLicornes.modifierMatrice(_asteroide, j, 2);
                     }
