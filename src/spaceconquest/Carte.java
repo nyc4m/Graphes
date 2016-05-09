@@ -10,6 +10,7 @@ import spaceconquest.Map.Case;
 import spaceconquest.Map.Couleur;
 import spaceconquest.Map.Couple;
 import spaceconquest.ObjetCeleste.ObjetCeleste;
+import spaceconquest.Race.Race;
 import spaceconquest.Race.Vaisseau;
 
 /**
@@ -115,7 +116,17 @@ public class Carte {
 
 //méthode gérant ce qu'il se passe quand on clique sur une case en mode manuel
     public void selectionCase(Couple c) {
-
+        Dijkstra d;
+        if(SpaceConquest.getTour() == Race.Licorne){
+            d = new Dijkstra(this.getGrapheLicornes());
+            
+        }else{
+            d = new Dijkstra(this.getGrapheZombie());
+        }
+        
+        d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
+        
+        this.colorationMouvement(d.getGraphe(), c);
         //on stocke le numero du sommet pour le chercher dans le tableau
         int numCase = this.position(c.getX(), c.getY());
         //on regarde si la distance pour aller au sommet est au plus 2        
