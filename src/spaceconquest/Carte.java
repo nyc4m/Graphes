@@ -10,6 +10,7 @@ import spaceconquest.Map.Case;
 import spaceconquest.Map.Couleur;
 import spaceconquest.Map.Couple;
 import spaceconquest.ObjetCeleste.ObjetCeleste;
+import spaceconquest.Race.Race;
 import spaceconquest.Race.Vaisseau;
 
 /**
@@ -115,16 +116,33 @@ public class Carte {
 
 //méthode gérant ce qu'il se passe quand on clique sur une case en mode manuel
     public void selectionCase(Couple c) {
+        Dijkstra d;
+        if (SpaceConquest.getTour() == Race.Licorne) {
+            d = new Dijkstra(this.getGrapheLicornes());
+
+        } else {
+            d = new Dijkstra(this.getGrapheZombie());
+        }
+        
+        //On calcule le plus court chemin pour parcourir le graphe a partir de l'endroit cliqué
+        d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
 
         //on stocke le numero du sommet pour le chercher dans le tableau
-        int numCase = this.position(c.getX(), c.getY());
-        //on regarde si la distance pour aller au sommet est au plus 2        
-        boolean caseOk = this.tabDistances.get(numCase) <= 2;
+        int numCase;
+        //si un case a été séléctionnée, on récupère son numéro
+        if (this.caseSelectionnee != null) {
+            numCase = this.position(this.caseSelectionnee.getX(), this.caseSelectionnee.getY());
+        } else { //Sinon on considère que la case 0 est séléctionnée, ce qui veut dire qu'aucune case n'est séléctionnée
+            numCase = 0;
+        }
+        //On verifie que la distance de la case cliquée au vaisseau est au maximum de 2       
+        boolean caseOk = d.getDistances().get(numCase) <= 2;
 
         if (c.equals(this.caseSelectionnee)) {
             //deselection de la case
             this.getCase(c).setCouleur(Couleur.Blanc);
             this.caseSelectionnee = null;
+            this.effacerColoration();
         } else //si une case avait déja été sélectionnée
         {
             if (this.caseSelectionnee != null && caseOk) {
@@ -135,6 +153,7 @@ public class Carte {
                 this.getCase(this.caseSelectionnee).setCouleur(Couleur.Blanc);
                 this.caseSelectionnee = null;
                 //on passe le tour
+                this.effacerColoration();
                 SpaceConquest.tourSuivant();
             } else //si aucune case n'avait été selectionné
             //on vérifie que la case nouvellement sélectionné contient un vaisseau du joueur en cours
@@ -142,12 +161,15 @@ public class Carte {
                 if (this.getCase(c).getVaisseau() != null) {
                     if (this.getCase(c).getVaisseau().getRace() == SpaceConquest.getTour()) {
                         //on selectionne la case
+
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
+                        this.colorationMouvement(d.getGraphe(), c);
                     }
                 }
             }
         }
+
     }
 
     /**
@@ -264,7 +286,7 @@ public class Carte {
                 //pour chaque boucle, la position de l'astéroide est calculée
                 int _asteroide = this.position(this.asteroides.get(i).getX(), this.asteroides.get(i).getY());
                 //le graphe est parcouru ligne par ligne, et tous les 1 sont changés par des deux
-                for (int j = 1; j <= this.taille * 3; j++) {
+                for (int j = 1; j <= this.taille * 3 * this.taille; j++) {
                     if (this.grapheLicornes.getMatrice(_asteroide, j) == 1) {
                         this.grapheLicornes.modifierMatrice(_asteroide, j, 2);
                     }
@@ -289,7 +311,8 @@ public class Carte {
     }
 
     /**
-     *Méthode retournant le sommet où se trouve lse soleil
+     * Méthode retournant le sommet où se trouve lse soleil
+     *
      * @return La position
      */
     public int getSoleilInt() {
@@ -370,7 +393,7 @@ public class Carte {
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
         d.plusCourtChemin(position, this.getSoleilInt());
- 
+
         //parcour du tableau des distances
         for (int i = 1; i <= d.getDistances().size() - 1; i++) {
             // Si la diastance est de 1 on colorie en vert

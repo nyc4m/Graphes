@@ -33,6 +33,7 @@ public class SpaceConquest {
         //on cree la partie
         partie = new Partie(5);
 
+
         partie.setMode(Mode.automatique);
         
         partie.placerLicoShip(1, 2);
@@ -43,6 +44,7 @@ public class SpaceConquest {
         
         partie.placerShadocksShip(10, 1);
         partie.placerShadocksLand(10, 2);
+
         
         partie.start();
     }

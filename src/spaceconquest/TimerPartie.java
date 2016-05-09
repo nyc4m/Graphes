@@ -5,11 +5,12 @@ package spaceconquest;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
 import spaceconquest.Map.Couleur;
 import spaceconquest.Map.Couple;
 import spaceconquest.Parties.Mode;
+import spaceconquest.Race.Vaisseau;
 
 /**
  *
@@ -124,6 +125,8 @@ public class TimerPartie extends Timer {
         //ce qu'il se passe lors du tour des shadocks
         private void tourDesShadocks() {
             System.out.println("Tour des Shadocks !");
+            
+            
 
             if (this.partie.getModeAuto() == true) {
                  
@@ -155,10 +158,19 @@ public class TimerPartie extends Timer {
 
             }
         }
+        
+        public void tourManuel(Graphe graphe, Vaisseau v){
+            Dijkstra d = new Dijkstra(graphe);
+            d.plusCourtChemin(numTourZombie, numTourZombie);
+            this.partie.getCarte().colorationMouvement(graphe, v.getPosition());
+        }
 
         //ce qu'il se passe lors du tour des zombies
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
+            if(!this.partie.getModeAuto()){
+                this.tourManuel(this.partie.getCarte().getGrapheZombie(), this.partie.getZombificator());
+            }
             if (this.partie.getModeAuto() == true) {
                 zombie = new Dijkstra(partie.getCarte().getGrapheZombie());
                 zombie.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()),  partie.getCarte().getSoleilInt());                     
@@ -180,6 +192,9 @@ public class TimerPartie extends Timer {
         //ce qu'il se passe lors du tour des licornes
         private void tourDesLicornes() {
             System.out.println("Tour des Licornes !");
+            if(!this.partie.getModeAuto()){
+                this.tourManuel(this.partie.getCarte().getGrapheLicornes(), this.partie.getLicoShip());
+            }
 
             if (this.partie.getModeAuto() == true) {
 
