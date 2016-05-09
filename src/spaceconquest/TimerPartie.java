@@ -160,6 +160,8 @@ public class TimerPartie extends Timer {
         }
         
         public void tourManuel(Graphe graphe, Vaisseau v){
+            Dijkstra d = new Dijkstra(graphe);
+            d.plusCourtChemin(numTourZombie, numTourZombie);
             this.partie.getCarte().colorationMouvement(graphe, v.getPosition());
         }
 
