@@ -160,6 +160,19 @@ public class TimerPartie extends Timer {
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
             if (this.partie.getModeAuto() == true) {
+                zombie = new Dijkstra(partie.getCarte().getGrapheZombie());
+                zombie.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()),  partie.getCarte().getSoleilInt());                     
+               
+                this.cheminZombies = zombie.construireChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), partie.getCarte().getPosVaisseauInt(partie.getLicoShip()));
+                
+                Couple caseActuelle = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie-2 ), this.partie.getCarte().getTaille());
+                Couple prochaineCase = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie -1), this.partie.getCarte().getTaille());
+                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Jaune);
+                partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
+                partie.getZombificator().setPosition(prochaineCase);
+               
+              
+
 
             }
         }
