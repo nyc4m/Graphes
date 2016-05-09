@@ -41,7 +41,7 @@ public class SpaceConquest {
         partie.placerZombificator(10, 3);
         
          *///placement des objets célestes
-        partie.placerObjetCeleste(new Etoile(), 3, 3);
+        partie.placerObjetCeleste(new Etoile(), 1, 2);
         /*partie.placerObjetCeleste(new Asteroide(), 4, 4);
         partie.placerObjetCeleste(new Asteroide(), 5, 4);
         partie.placerObjetCeleste(new Asteroide(), 5, 3);
