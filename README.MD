@@ -8,6 +8,10 @@ Les différents graphes sont **générés**
 
 La coloration des cases peut-être réinitialisée
 
+La coloration du mouvement est faite
+
+Les licornes se deplacent automatiquement
+
 Dijkstra !!!
 
 Quelques liens :
