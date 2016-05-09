@@ -42,6 +42,7 @@ public class Vaisseau {
         switch(race) {
             case Zombie : return "croiseur Zombie";
             case Licorne : return "vaisseau amiral Licorne";
+            case Shadocks : return "fusée shadocks";
         }
         return "vaisseau inconnu";
     }

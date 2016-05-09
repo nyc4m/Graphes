@@ -3,6 +3,7 @@
  */
 package spaceconquest;
 
+import java.util.ArrayList;
 import spaceconquest.ObjetCeleste.*;
 import spaceconquest.Parties.Mode;
 import spaceconquest.Partie;
@@ -27,7 +28,9 @@ public class SpaceConquest {
     public static void tourSuivant() {
         partie.tourSuivant();
     }
-
+     
+    
+    
     public static void main(String[] args) {
         //on cree la partie
         partie = new Partie(5);
@@ -46,9 +49,19 @@ public class SpaceConquest {
         //on definit le mode de jeu
         partie.setMode(Mode.manuel);*/
         //on lance l'IHM
+        
+       partie.setMode(Mode.automatique);
+         partie.placerLicoLand(2, 2);
+         partie.placerShadocksLand(8, 2);
+         partie.placerShadocksShip(10, 2);
         System.out.println(partie.getCarte().getSoleil().getX() + " " + partie.getCarte().getSoleil().getX());
         System.out.println(partie.getCarte().getGrapheGrille());
-        //partie.start();
+        Dijkstra d = new Dijkstra(partie.getCarte().getGrapheLicornes());
+       
+ ArrayList<Integer>cheminLicornes = new ArrayList();
+       cheminLicornes = d.cheminShadock(partie.getCarte().position(partie.getShadocksLand().getPosition().getX(),partie.getShadocksLand().getPosition().getY()),  partie.getCarte().getSoleilInt());
+       System.out.println(cheminLicornes );
+        partie.start();
     }
 
 }
