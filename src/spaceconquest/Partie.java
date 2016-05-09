@@ -127,6 +127,7 @@ public class Partie {
                     }
         }
         this.fenetre.refreshCarte();
+        this.fenetre.refreshSide();
         
     }
     
