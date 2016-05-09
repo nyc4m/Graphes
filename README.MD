@@ -12,7 +12,11 @@ La coloration du mouvement est faite
 
 Les licornes se deplacent automatiquement
 
+Les shadocks se deplacent a 3 cases max de leur planete
+
 Dijkstra !!!
+
+
 
 Quelques liens :
 ----------------
