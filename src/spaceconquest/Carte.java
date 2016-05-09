@@ -117,18 +117,22 @@ public class Carte {
 //méthode gérant ce qu'il se passe quand on clique sur une case en mode manuel
     public void selectionCase(Couple c) {
         Dijkstra d;
-        if(SpaceConquest.getTour() == Race.Licorne){
+        if (SpaceConquest.getTour() == Race.Licorne) {
             d = new Dijkstra(this.getGrapheLicornes());
-            
-        }else{
+
+        } else {
             d = new Dijkstra(this.getGrapheZombie());
         }
-        
+
         d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
-        
-        
+
         //on stocke le numero du sommet pour le chercher dans le tableau
-        int numCase = this.position(c.getX(), c.getY());
+        int numCase;
+        if (this.caseSelectionnee != null) {
+            numCase = this.position(this.caseSelectionnee.getX(), this.caseSelectionnee.getY());
+        } else {
+            numCase = 0;
+        }
         //on regarde si la distance pour aller au sommet est au plus 2        
         boolean caseOk = d.getDistances().get(numCase) <= 2;
 
@@ -155,7 +159,7 @@ public class Carte {
                 if (this.getCase(c).getVaisseau() != null) {
                     if (this.getCase(c).getVaisseau().getRace() == SpaceConquest.getTour()) {
                         //on selectionne la case
-                        
+
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
                         this.colorationMouvement(d.getGraphe(), c);
@@ -163,8 +167,7 @@ public class Carte {
                 }
             }
         }
-        
-        
+
     }
 
     /**
@@ -306,7 +309,8 @@ public class Carte {
     }
 
     /**
-     *Méthode retournant le sommet où se trouve lse soleil
+     * Méthode retournant le sommet où se trouve lse soleil
+     *
      * @return La position
      */
     public int getSoleilInt() {
@@ -387,7 +391,7 @@ public class Carte {
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
         d.plusCourtChemin(position, this.getSoleilInt());
- 
+
         //parcour du tableau des distances
         for (int i = 1; i <= d.getDistances().size() - 1; i++) {
             // Si la diastance est de 1 on colorie en vert
