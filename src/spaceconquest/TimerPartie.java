@@ -183,7 +183,16 @@ public class TimerPartie extends Timer {
                 partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                 partie.getZombificator().setPosition(prochaineCase);
                
-              
+                /* Stop la partie lors du gagnant pour permet un arret des autres joueurs. */
+                int moi1 = partie.getZombificator().getPosition().getX();
+                int moi2 = partie.getZombificator().getPosition().getY();
+                
+                int toi1 =partie.getLicoShip().getPosition().getX();
+                int toi2 = partie.getLicoShip().getPosition().getY();
+                if ((moi1 == toi1) && (moi2 == toi2)){
+                    stop(); 
+                    System.out.println("Les Zombies ont gagné");
+                }              
 
 
             }
@@ -204,7 +213,25 @@ public class TimerPartie extends Timer {
                 partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                 partie.getLicoShip().setPosition(prochaineCase);
                 this.numEtapeLicorne++;
+                
+                /* Stop la partie lors du gagnant pour permet un arret des autres joueurs. */
+                int moi1 = partie.getLicoLand().getPosition().getX();
+                int moi2 = partie.getLicoLand().getPosition().getY();
+                
+                int toi1 =partie.getLicoShip().getPosition().getX();
+                int toi2 = partie.getLicoShip().getPosition().getY();
+                if ((moi1 == toi1) && (moi2 == toi2)){
+                    stop(); 
+                    
+                    System.out.println("Les licornes ont gagné.");
 
+                    /* Supplément pour le beau jeu  et surtout l'affichage
+                    for(int i=1; i < partie.getCarte().getTaille();i++){
+                        for(int j=1; j < partie.getCarte().getTaille()+1;j++){
+                    partie.getCarte().addObjetCeleste(new Gagner(), i, j);
+                      }
+                    }*/
+            }
             }
 
             partie.refreshCarte();
