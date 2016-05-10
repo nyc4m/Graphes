@@ -23,6 +23,7 @@ public class GestionnaireImage {
     private BufferedImage planeteShadocks = null;                               //image de la planete des shadocks    
     private BufferedImage etoile = null;                                        //image d'une étoile
     private BufferedImage asteroide = null;                                     //image d'un astéroide
+    private BufferedImage gagner = null;                                        //image d'un gagner
     private HashMap<Race,BufferedImage> vaisseaux;                              //images des vaisseaux
     private HashMap<Race,BufferedImage> joueurs;                                //images des joueurs
     
@@ -35,6 +36,7 @@ public class GestionnaireImage {
              this.planeteShadocks = ImageIO.read(SpaceConquest.class.getResource("/planeteShadocks.png"));             
              this.etoile = ImageIO.read(SpaceConquest.class.getResource("/etoile.png"));
              this.asteroide = ImageIO.read(SpaceConquest.class.getResource("/asteroide.png"));
+             this.gagner = ImageIO.read(SpaceConquest.class.getResource("/gagner.png"));
              this.vaisseaux = new HashMap<>();
              this.vaisseaux.put(Race.Zombie, ImageIO.read(SpaceConquest.class.getResource("/vaisseauZombie.png")));
              this.vaisseaux.put(Race.Licorne, ImageIO.read(SpaceConquest.class.getResource("/vaisseauLicorne.png")));
@@ -88,4 +90,8 @@ public class GestionnaireImage {
     public BufferedImage getImageJoueur(Race r) {
         return this.joueurs.get(r);
     }
+    //getteur de l'image de gagner
+    public BufferedImage getImageGagner() {
+        return this.gagner;
+    }    
 }

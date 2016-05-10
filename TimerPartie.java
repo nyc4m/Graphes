@@ -4,14 +4,12 @@
 package spaceconquest;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Timer;
+import spaceconquest.Map.Case;
 import spaceconquest.Map.Couleur;
 import spaceconquest.Map.Couple;
 import spaceconquest.Parties.Mode;
-import spaceconquest.Race.Vaisseau;
-import spaceconquest.ObjetCeleste.Gagner;
 
 /**
  *
@@ -41,9 +39,6 @@ public class TimerPartie extends Timer {
     private class TimerTaskPartie extends TimerTask {
 
         private Partie partie;
-        private ArrayList<Integer> cheminShadock;
-        
-        private Random randomGenerator;
 
         /**
          * contient le chemin le plus court pour atteindre les licornes
@@ -67,19 +62,11 @@ public class TimerPartie extends Timer {
          */
         private Dijkstra licorne;
         private Dijkstra zombie;
-        
-        private Dijkstra shadock;
 
         //constructeur
         public TimerTaskPartie(Partie partie) {
             this.partie = partie;
 
-           
-            
-            shadock = new Dijkstra(partie.getCarte().getGrapheLicornes());
-            cheminShadock = new ArrayList();
-            cheminShadock = shadock.cheminShadock(partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY()), partie.getCarte().getSoleilInt());
-            
             int posVaisseauLicornes = partie.getCarte().getPosVaisseauInt(partie.getLicoShip());
             int posVaisseauZombies = partie.getCarte().getPosVaisseauInt(partie.getZombificator());
             int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
@@ -101,7 +88,9 @@ public class TimerPartie extends Timer {
             
                                           
                                 
-           
+                
+                
+
         }
 
         //fonction appellée à chaque tic du timer
@@ -115,64 +104,16 @@ public class TimerPartie extends Timer {
                     case Zombie:
                         this.tourDesZombies();
                         break;
-                    case Shadocks:
-                        this.tourDesShadocks();
-                        break;
                 }
                 this.partie.tourSuivant();
             }
         }
 
-        //ce qu'il se passe lors du tour des shadocks
-        private void tourDesShadocks() {
-            System.out.println("Tour des Shadocks !");
-            
-            
-
-            if (this.partie.getModeAuto() == true) {
-                 
-                boolean fini = false;
-                Couple caseActuelle = partie.getShadocks().getPosition();
-                int posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY());
-                int posShadockVaisseau = partie.getCarte().getPosVaisseauInt(partie.getShadocks());
-                int posLicoland = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
-                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
-
-                while (fini != true) {
-                    randomGenerator = new Random();
-                    int index = randomGenerator.nextInt(cheminShadock.size());
-                    int sommet = cheminShadock.get(index);
-                    
-                    Dijkstra d = new Dijkstra(partie.getCarte().getGrapheZombie());
-                    d.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
-                    
-                    
-                    if (d.getDistances().get(sommet) <= 1 && sommet != posShadockPlanete && sommet != posShadockVaisseau && sommet != posLicoland) {
-                  
-                        Couple prochaineCase = partie.getCarte().getCouple(sommet, partie.getCarte().getTaille());
-                        partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
-                        partie.getShadocks().setPosition(prochaineCase);
-                        fini = true;
-                    
-                    }
-                }
-
-            }
-        }
-        
-        public void tourManuel(Graphe graphe, Vaisseau v){
-            Dijkstra d = new Dijkstra(graphe);
-            d.plusCourtChemin(numTourZombie, numTourZombie);
-            this.partie.getCarte().colorationMouvement(graphe, v.getPosition());
-        }
-
         //ce qu'il se passe lors du tour des zombies
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
-            if(!this.partie.getModeAuto()){
-                this.tourManuel(this.partie.getCarte().getGrapheZombie(), this.partie.getZombificator());
-            }
             if (this.partie.getModeAuto() == true) {
+                
                 zombie = new Dijkstra(partie.getCarte().getGrapheZombie());
                 zombie.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()),  partie.getCarte().getSoleilInt());                     
                
@@ -180,21 +121,11 @@ public class TimerPartie extends Timer {
                 
                 Couple caseActuelle = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie-2 ), this.partie.getCarte().getTaille());
                 Couple prochaineCase = partie.getCarte().getCouple(this.cheminZombies.get(numTourZombie -1), this.partie.getCarte().getTaille());
-                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Jaune);
+                partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
                 partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                 partie.getZombificator().setPosition(prochaineCase);
                
-                /* Stop la partie lors du gagnant pour permet un arret des autres joueurs. */
-                int moi1 = partie.getZombificator().getPosition().getX();
-                int moi2 = partie.getZombificator().getPosition().getY();
-                
-                int toi1 =partie.getLicoShip().getPosition().getX();
-                int toi2 = partie.getLicoShip().getPosition().getY();
-                if ((moi1 == toi1) && (moi2 == toi2)){
-                    stop(); 
-                    System.out.println("Les Zombies ont gagné");
-                }              
-
+              
 
             }
         }
@@ -202,10 +133,6 @@ public class TimerPartie extends Timer {
         //ce qu'il se passe lors du tour des licornes
         private void tourDesLicornes() {
             System.out.println("Tour des Licornes !");
-            if(!this.partie.getModeAuto()){
-                this.tourManuel(this.partie.getCarte().getGrapheLicornes(), this.partie.getLicoShip());
-            }
-
             if (this.partie.getModeAuto() == true) {
 
                 Couple caseActuelle = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne - 2), this.partie.getCarte().getTaille());
@@ -214,25 +141,7 @@ public class TimerPartie extends Timer {
                 partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                 partie.getLicoShip().setPosition(prochaineCase);
                 this.numEtapeLicorne++;
-                
-                /* Stop la partie lors du gagnant pour permet un arret des autres joueurs. */
-                int moi1 = partie.getLicoLand().getPosition().getX();
-                int moi2 = partie.getLicoLand().getPosition().getY();
-                
-                int toi1 =partie.getLicoShip().getPosition().getX();
-                int toi2 = partie.getLicoShip().getPosition().getY();
-                if ((moi1 == toi1) && (moi2 == toi2)){
-                    stop(); 
-                    
-                    System.out.println("Les licornes ont gagné.");
 
-                    /* Supplément pour le beau jeu  et surtout l'affichage
-                    for(int i=1; i < (partie.getCarte().getTaille())*3;i++){
-                        for(int j=1; j < partie.getCarte().getTaille()+1;j++){
-                    partie.getCarte().addObjetCeleste(new Gagner(), i, j);
-                      }
-                    }*/
-            }
             }
 
             partie.refreshCarte();
