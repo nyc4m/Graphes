@@ -11,6 +11,7 @@ import spaceconquest.Map.Couleur;
 import spaceconquest.Map.Couple;
 import spaceconquest.Parties.Mode;
 import spaceconquest.Race.Vaisseau;
+import spaceconquest.ObjetCeleste.Gagner;
 
 /**
  *
