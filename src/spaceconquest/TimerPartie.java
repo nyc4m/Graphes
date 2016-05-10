@@ -12,7 +12,6 @@ import spaceconquest.Map.Couple;
 import spaceconquest.Parties.Mode;
 import spaceconquest.Race.Vaisseau;
 import spaceconquest.ObjetCeleste.Gagner;
-import spaceconquest.Race.Race;
 
 /**
  *
@@ -219,12 +218,7 @@ public class TimerPartie extends Timer {
 
         public void deplacement(Graphe graphe, Vaisseau v, int cible) {
             Dijkstra chemin = new Dijkstra(graphe);
-            if (SpaceConquest.getTour()==Race.Licorne){
-                chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt(),this.partie.getCarte().getPosVaisseauInt(partie.getZombificator())); 
-            } else {
-              chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());  
-            }
-            
+            chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
             ArrayList<Integer> pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
 
             Couple caseActuelle = partie.getCarte().getCouple(pcChemin.get(0), this.partie.getCarte().getTaille());
@@ -235,8 +229,6 @@ public class TimerPartie extends Timer {
             this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
 
             this.deplacerVaisseau(prochaineCase);
-            
-            this.partie.refreshCarte();
 
         }
 
@@ -263,7 +255,7 @@ public class TimerPartie extends Timer {
 
             }
 
-          
+            partie.refreshCarte();
         }
 
     }

@@ -97,10 +97,6 @@ public class Dijkstra  {
         
     }
     
-    public void isolerZombie(int position) {
-        this.mark.set(position, Boolean.TRUE);
-    }
-    
     
     /**
      * Méthode permettant d'afficher de manière brute l'état de tous les tableau. 
@@ -217,21 +213,6 @@ public class Dijkstra  {
      */
     public void plusCourtChemin(int dep, int soleil){
         this.intitialisation(dep, soleil);
-        while(!this.listeTerminee()){
-            int x = this.minDistance();
-            this.mark.set(x, Boolean.TRUE);
-            for(int i = 1; i <= this.graphe.getNbSommet(); i++){
-                this.maj_distance(x, i);
-            }
-        }
-    }
-    
-        /**
-     * Methode principale permettant de calculer le plus court chemin.
-     */
-    public void plusCourtChemin(int dep, int soleil,int position){
-        this.intitialisation(dep, soleil);
-        this.isolerZombie(position);
         while(!this.listeTerminee()){
             int x = this.minDistance();
             this.mark.set(x, Boolean.TRUE);
