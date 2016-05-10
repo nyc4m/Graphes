@@ -227,7 +227,7 @@ public class TimerPartie extends Timer {
                     System.out.println("Les licornes ont gagné.");
 
                     /* Supplément pour le beau jeu  et surtout l'affichage
-                    for(int i=1; i < partie.getCarte().getTaille();i++){
+                    for(int i=1; i < (partie.getCarte().getTaille())*3;i++){
                         for(int j=1; j < partie.getCarte().getTaille()+1;j++){
                     partie.getCarte().addObjetCeleste(new Gagner(), i, j);
                       }
