@@ -24,9 +24,15 @@ public class Carte {
     private Couple caseSelectionnee;                                                //case actuellement sélectionnée par le joueur
     private Graphe graphe;
     private Graphe grapheZombie;
+    /**
+     * Tous les astéroïdes sont stockés
+     */
     private ArrayList<Couple> asteroides;
     private Graphe grapheLicornes;
-    private ArrayList<Integer> tabDistances;
+    /**
+     * Toutes les planètes potentiellements colonisables sont stockées
+     */
+    private ArrayList<Couple> licoLands;
     /**
      * Stocke les coordonnées du soleil pour en bannir l'accès
      */
@@ -37,6 +43,7 @@ public class Carte {
         this.taille = _taille;
         this.cases = new HashMap<>();
         this.asteroides = new ArrayList();
+        this.licoLands = new ArrayList();
         //initialisation de la map vide
         for (int i = 1; i <= 3 * _taille; i++) {
             for (int j = 1; j <= _taille; j++) {
@@ -47,7 +54,6 @@ public class Carte {
         this.setGrapheGrille();
         this.setGrapheZombie();
         this.setGrapheLicornes();
-        this.tabDistances = new ArrayList();
 
     }
 
@@ -73,10 +79,10 @@ public class Carte {
             Couple c = new Couple(i, j);
             if (obj.getType().equals("etoile")) {
                 soleil = c;
-
             } else if (obj.getType().equals("asteroide")) {
                 this.asteroides.add(c);
-                this.setGrapheLicornes();
+            }else if(obj.getType().equals("planete")){
+                this.licoLands.add(c);
             }
             obj.setPosition(c);
             this.actualiser();
@@ -414,4 +420,10 @@ public class Carte {
         }
 
     }
+
+    public ArrayList<Couple> getLicoLands() {
+        return licoLands;
+    }
+    
+    
 }

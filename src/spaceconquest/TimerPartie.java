@@ -62,12 +62,19 @@ public class TimerPartie extends Timer {
          */
         private int numTourZombie;
         /**
-         * Contient le Dijkstra des différentes races
+         * Contient le Dijkstra des licornes
          */
         private Dijkstra licorne;
+        /**
+         * Contient le plus court chemin des zombies
+         */
         private Dijkstra zombie;
-        
+        /**
+         * Contient le plus court chemin des shadocks
+         */
         private Dijkstra shadock;
+        
+        
 
         //constructeur
         public TimerTaskPartie(Partie partie) {
@@ -97,10 +104,24 @@ public class TimerPartie extends Timer {
             this.cheminZombies = new ArrayList();
             this.cheminLicornes = licorne.construireChemin(posVaisseauLicornes, posLicoLand);
             zombie.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), partie.getCarte().getSoleilInt());           
+
+        }
+        
+        public int planeteProche(){
+            Dijkstra d = new Dijkstra(this.partie.getCarte().getGrapheLicornes());
+            d.plusCourtChemin(this.partie.getCarte().position(this.partie.getLicoShip().getPosition().getX(), this.partie.getLicoShip().getPosition().getY()), this.partie.getCarte().getSoleilInt());
+            int distanceMin = d.infini(); //la distance la plus courte est 0 pour commencer;
+            int planete = -1;
+            int _case = 0;
+            for(Couple e : this.partie.getCarte().getLicoLands()){
+                _case = this.partie.getCarte().position(e.getX(), e.getY());
+                if(d.getDistances().get(_case) < distanceMin){
+                    distanceMin = d.getDistances().get(_case);
+                    planete = _case;
+                }
+            }
             
-                                          
-                                
-           
+            return _case;
         }
 
         //fonction appellée à chaque tic du timer
@@ -197,7 +218,7 @@ public class TimerPartie extends Timer {
             }
 
             if (this.partie.getModeAuto() == true) {
-
+                int test = this.planeteProche();
                 Couple caseActuelle = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne - 2), this.partie.getCarte().getTaille());
                 Couple prochaineCase = partie.getCarte().getCouple(this.cheminLicornes.get(numEtapeLicorne - 1), this.partie.getCarte().getTaille());
                 partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Vert);
