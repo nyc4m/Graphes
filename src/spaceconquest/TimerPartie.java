@@ -11,6 +11,7 @@ import spaceconquest.Map.Couleur;
 import spaceconquest.Map.Couple;
 import spaceconquest.Parties.Mode;
 import spaceconquest.Race.Vaisseau;
+import spaceconquest.ObjetCeleste.Gagner;
 
 /**
  *
@@ -82,21 +83,9 @@ public class TimerPartie extends Timer {
             int posVaisseauZombies = partie.getCarte().getPosVaisseauInt(partie.getZombificator());
             int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
 
-            numEtapeLicorne = 2;
-
-            licorne = new Dijkstra(partie.getCarte().getGrapheLicornes());
-            zombie = new Dijkstra(partie.getCarte().getGrapheZombie());
-
-            licorne.plusCourtChemin(posVaisseauLicornes, partie.getCarte().getSoleilInt());
-
-            this.cheminLicornes = new ArrayList();
-            this.cheminZombies = new ArrayList();
-            this.cheminLicornes = licorne.construireChemin(posVaisseauLicornes, posLicoLand);
-            zombie.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), partie.getCarte().getSoleilInt());
-
         }
 
-        private void majListe() {
+        private void majListePlanete() {
             Couple licorne = this.partie.getLicoShip().getPosition();
             Couple planete_a_supprimer = null;
             for (Couple e : this.partie.getCarte().getLicoLands()) {
@@ -110,7 +99,7 @@ public class TimerPartie extends Timer {
         }
 
         public int planeteProche() {
-            this.majListe();
+            this.majListePlanete();
             Dijkstra d = new Dijkstra(this.partie.getCarte().getGrapheLicornes());
             d.plusCourtChemin(this.partie.getCarte().position(this.partie.getLicoShip().getPosition().getX(), this.partie.getLicoShip().getPosition().getY()), this.partie.getCarte().getSoleilInt());
             int distanceMin = d.infini(); //la distance la plus courte est 0 pour commencer;
@@ -184,8 +173,19 @@ public class TimerPartie extends Timer {
         private void tourDesZombies() {
             System.out.println("Tour des Zombies !");
             if (this.partie.getModeAuto() == true) {
+
                 int licornes = this.partie.getCarte().getPosVaisseauInt(this.partie.getLicoShip());
                 this.deplacement(this.partie.getCarte().getGrapheZombie(), this.partie.getZombificator(), licornes);
+
+                /* Stop la partie lors du gagnant pour permet un arret des autres joueurs. */
+                Couple posLicornes = this.partie.getLicoShip().getPosition();
+                Couple posZombies = this.partie.getZombificator().getPosition();
+                if (posLicornes.hashCode() == posZombies.hashCode()) {
+                    stop();
+                    System.out.println("Les Zombies ont gagné");
+                }
+
+                this.partie.refreshCarte();
 
             }
         }
@@ -237,8 +237,21 @@ public class TimerPartie extends Timer {
             System.out.println("Tour des Licornes !");
 
             if (this.partie.getModeAuto() == true) {
+
                 int planete_la_plus_proche = this.planeteProche();
                 this.deplacement(this.partie.getCarte().getGrapheLicornes(), this.partie.getLicoShip(), planete_la_plus_proche);
+
+                if (this.partie.getCarte().getLicoLands().isEmpty()) {
+                    stop();
+                    System.out.println("Les licornes ont gagné.");
+
+                    /* Supplément pour le beau jeu  et surtout l'affichage
+                    for(int i=1; i < (partie.getCarte().getTaille())*3;i++){
+                        for(int j=1; j < partie.getCarte().getTaille()+1;j++){
+                    partie.getCarte().addObjetCeleste(new Gagner(), i, j);
+                      }
+                    }*/
+                }
 
             }
 
