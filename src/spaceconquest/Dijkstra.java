@@ -98,7 +98,7 @@ public class Dijkstra  {
     }
     
     public void isolerZombie(int position){
-        this.mark.set(position, Boolean.TRUE);
+        this.mark.set(position, Boolean.TRUE);      
         
     }
     
@@ -230,9 +230,9 @@ public class Dijkstra  {
     /**
      * Methode principale permettant de calculer le plus court chemin pour les licornes.
      */
-    public void plusCourtChemin(int dep, int soleil,int position){
+    public void plusCourtChemin(int dep, int soleil,int isolement){
         this.intitialisation(dep, soleil);
-        this.isolerZombie(position);
+        this.isolerZombie(isolement);
         while(!this.listeTerminee()){
             int x = this.minDistance();
             this.mark.set(x, Boolean.TRUE);
