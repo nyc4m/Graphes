@@ -37,6 +37,8 @@ public class Carte {
      * Stocke les coordonnées du soleil pour en bannir l'accès
      */
     private Couple soleil;
+    private Couple zombie;
+    private Couple ds;
 
 //Constructeur
     public Carte(int _taille) {
@@ -54,6 +56,7 @@ public class Carte {
         this.setGrapheGrille();
         this.setGrapheZombie();
         this.setGrapheLicornes();
+        zombie = new Couple(1, 1);
 
     }
 
@@ -81,7 +84,7 @@ public class Carte {
                 soleil = c;
             } else if (obj.getType().equals("asteroide")) {
                 this.asteroides.add(c);
-            }else if(obj.getType().equals("planete")){
+            } else if (obj.getType().equals("planete")) {
                 this.licoLands.add(c);
             }
             obj.setPosition(c);
@@ -117,32 +120,38 @@ public class Carte {
             this.getCase(arrivee).getVaisseau().setPosition(null);
         }
         this.getCase(arrivee).addVaisseau(this.getCase(depart).getVaisseau());
+
         this.getCase(depart).addVaisseau(null);
     }
 
 //méthode gérant ce qu'il se passe quand on clique sur une case en mode manuel
     public void selectionCase(Couple c) {
         Dijkstra d;
+        //On calcule le plus court chemin pour parcourir le graphe a partir de l'endroit cliqué
         if (SpaceConquest.getTour() == Race.Licorne) {
             d = new Dijkstra(this.getGrapheLicornes());
+            d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
+            d.getDistances().set(this.position(zombie.getX(), zombie.getY()), d.infini());
 
         } else {
             d = new Dijkstra(this.getGrapheZombie());
+            d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
         }
-        
-        //On calcule le plus court chemin pour parcourir le graphe a partir de l'endroit cliqué
-        d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
 
         //on stocke le numero du sommet pour le chercher dans le tableau
         int numCase;
+        System.out.println(ds = zombie);
+        int caseActuelle = this.position(c.getX(), c.getY());
         //si un case a été séléctionnée, on récupère son numéro
         if (this.caseSelectionnee != null) {
             numCase = this.position(this.caseSelectionnee.getX(), this.caseSelectionnee.getY());
         } else { //Sinon on considère que la case 0 est séléctionnée, ce qui veut dire qu'aucune case n'est séléctionnée
             numCase = 0;
         }
+
         //On verifie que la distance de la case cliquée au vaisseau est au maximum de 2       
-        boolean caseOk = d.getDistances().get(numCase) <= 2;
+        boolean caseOk = d.getDistances().get(numCase) <= 2 && d.getDistances().get(caseActuelle) < d.infini();
+        d.afficheTableaux();
 
         if (c.equals(this.caseSelectionnee)) {
             //deselection de la case
@@ -155,14 +164,18 @@ public class Carte {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
                 this.BougerVaisseau(this.caseSelectionnee, c);
+                if (SpaceConquest.getTour() == Race.Zombie) {
+                    zombie = c;
+                }
+
                 //on déselectionne la case
                 this.getCase(this.caseSelectionnee).setCouleur(Couleur.Blanc);
                 this.caseSelectionnee = null;
                 //on passe le tour
                 this.effacerColoration();
                 SpaceConquest.tourSuivant();
-            } else //si aucune case n'avait été selectionné
-            //on vérifie que la case nouvellement sélectionné contient un vaisseau du joueur en cours
+            } else //si aucune case n'avait été selectionnée
+            //on vérifie que la case nouvellement sélectionnée contient un vaisseau du joueur en cours
             {
                 if (this.getCase(c).getVaisseau() != null) {
                     if (this.getCase(c).getVaisseau().getRace() == SpaceConquest.getTour()) {
@@ -398,7 +411,12 @@ public class Carte {
         // on récupère la position du vaisseau passé  en paramètre
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
-        d.plusCourtChemin(position, this.getSoleilInt());
+        if (SpaceConquest.getTour() == Race.Licorne) {
+
+            d.plusCourtChemin(position, this.getSoleilInt(), this.position(zombie.getX(), zombie.getY()));
+        } else {
+            d.plusCourtChemin(position, this.getSoleilInt());
+        }
 
         //parcour du tableau des distances
         for (int i = 1; i <= d.getDistances().size() - 1; i++) {
@@ -424,6 +442,5 @@ public class Carte {
     public ArrayList<Couple> getLicoLands() {
         return licoLands;
     }
-    
-    
+
 }

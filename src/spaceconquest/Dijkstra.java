@@ -97,6 +97,11 @@ public class Dijkstra  {
         
     }
     
+    public void isolerZombie(int position){
+        this.mark.set(position, Boolean.TRUE);      
+        
+    }
+    
     
     /**
      * Méthode permettant d'afficher de manière brute l'état de tous les tableau. 
@@ -221,6 +226,22 @@ public class Dijkstra  {
             }
         }
     }
+    
+    /**
+     * Methode principale permettant de calculer le plus court chemin pour les licornes.
+     */
+    public void plusCourtChemin(int dep, int soleil,int isolement){
+        this.intitialisation(dep, soleil);
+        this.isolerZombie(isolement);
+        while(!this.listeTerminee()){
+            int x = this.minDistance();
+            this.mark.set(x, Boolean.TRUE);
+            for(int i = 1; i <= this.graphe.getNbSommet(); i++){
+                this.maj_distance(x, i);
+            }
+        }
+    }
+    
     
     
       public ArrayList<Integer> cheminShadock(int sommet,int soleil){
