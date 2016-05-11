@@ -37,6 +37,8 @@ public class Carte {
      * Stocke les coordonnées du soleil pour en bannir l'accès
      */
     private Couple soleil;
+    private Couple zombie;
+    private Couple ds;
 
 //Constructeur
     public Carte(int _taille) {
@@ -54,6 +56,7 @@ public class Carte {
         this.setGrapheGrille();
         this.setGrapheZombie();
         this.setGrapheLicornes();
+        zombie = new Couple(1,4);
 
     }
 
@@ -117,6 +120,7 @@ public class Carte {
             this.getCase(arrivee).getVaisseau().setPosition(null);
         }
         this.getCase(arrivee).addVaisseau(this.getCase(depart).getVaisseau());
+        
         this.getCase(depart).addVaisseau(null);
     }
 
@@ -155,6 +159,7 @@ public class Carte {
                 //ajouter des conditions de déplacement
                 //on fait bouger le vaisseau
                 this.BougerVaisseau(this.caseSelectionnee, c);
+                zombie = c;
                 //on déselectionne la case
                 this.getCase(this.caseSelectionnee).setCouleur(Couleur.Blanc);
                 this.caseSelectionnee = null;
@@ -398,7 +403,15 @@ public class Carte {
         // on récupère la position du vaisseau passé  en paramètre
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
-        d.plusCourtChemin(position, this.getSoleilInt());
+        if (SpaceConquest.getTour() == Race.Licorne) {
+            ds = zombie;
+            System.out.println(ds);
+            d.plusCourtChemin(position, this.getSoleilInt(),this.position(zombie.getX(), zombie.getY()));
+        } else {
+             d.plusCourtChemin(position, this.getSoleilInt());
+        }
+        
+       
 
         //parcour du tableau des distances
         for (int i = 1; i <= d.getDistances().size() - 1; i++) {
@@ -412,7 +425,7 @@ public class Carte {
             if (d.getDistances().get(i) == 2) // 2 points de déplacement
             {
                 Couple c = new Couple(getCouple(i, this.taille).getX(), getCouple(i, this.taille).getY());
-
+                              
                 this.getCase(c).setCouleur(Couleur.Jaune);
 
             }
