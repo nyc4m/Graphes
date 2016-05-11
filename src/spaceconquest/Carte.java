@@ -172,7 +172,7 @@ public class Carte {
 
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
-                        this.colorationMouvement(this.grapheLicornes.clone(), c);
+                        this.colorationMouvement(this.grapheLicornes, c);
                     }
                 }
             }
@@ -397,20 +397,24 @@ public class Carte {
     public void colorationMouvement(Graphe g, Couple v) {
 
         
+        
         Dijkstra d = new Dijkstra(g);
-        // on récupère la position du vaisseau passé  en paramètre
-        int position = this.position(v.getX(), v.getY());
-        //On lance un Dijkstra à partir de la position
-        d.plusCourtChemin(position, this.getSoleilInt());
         
         try{
             BufferedWriter matriceD = new BufferedWriter(new FileWriter("c:\\users\\baptiste\\desktop\\matriceD.html"));
-            matriceD.write(d.getGraphe().toString());
+            matriceD.write(g.toString());
             matriceD.close();
             System.out.println("Ecrit dijkstra");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        
+        // on récupère la position du vaisseau passé  en paramètre
+        int position = this.position(v.getX(), v.getY());
+        //On lance un Dijkstra à partir de la position
+        d.plusCourtChemin(position, this.getSoleilInt());
+        
+        
         
 
         //parcour du tableau des distances
