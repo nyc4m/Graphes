@@ -3,6 +3,8 @@
  */
 package spaceconquest;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import spaceconquest.ObjetCeleste.*;
 import spaceconquest.Parties.Mode;
@@ -34,9 +36,12 @@ public class SpaceConquest {
         partie = new Partie(5);
 
 
-        partie.setMode(Mode.automatique);
+        partie.setMode(Mode.manuel);
         
-        partie.placerLicoShip(1, 2);
+        partie.placerLicoShip(8, 3);
+        partie.placerObjetCeleste(new Asteroide(), 7, 2);
+        partie.placerObjetCeleste(new Asteroide(), 6, 3);
+        partie.placerObjetCeleste(new Asteroide(), 7, 3);
         partie.placerLicoLand(15, 3);
         
         partie.placerZombificator(1, 5);
@@ -46,7 +51,20 @@ public class SpaceConquest {
         partie.placerShadocksLand(10, 2);
 
         
+        
         partie.start();
+        
+        try{
+            BufferedWriter matrice = new BufferedWriter(new FileWriter("c:\\users\\baptiste\\desktop\\matrice.html"));
+            BufferedWriter matriceZ = new BufferedWriter(new FileWriter("c:\\users\\baptiste\\desktop\\matriceZ.html"));
+            matriceZ.write(partie.getCarte().getGrapheZombie().toString());
+            matrice.write(partie.getCarte().getGrapheLicornes().toString());
+            matriceZ.close();
+            matrice.close();
+            System.out.println("Ecrit");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
 }

@@ -42,7 +42,7 @@ public class Dijkstra  {
         this.mark = new ArrayList();
         this.distances = new ArrayList();
         this.antecedents = new ArrayList();
-        this.graphe = g.clone();
+        this.graphe = g;
     }
     
        
