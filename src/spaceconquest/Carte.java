@@ -135,7 +135,11 @@ public class Carte {
         }
         
         //On calcule le plus court chemin pour parcourir le graphe a partir de l'endroit cliqué
+        if(SpaceConquest.getTour()==Race.Licorne){
+           d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt(),this.position(zombie.getX(), zombie.getY())); 
+        } else {
         d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
+        }
 
         //on stocke le numero du sommet pour le chercher dans le tableau
         int numCase;
