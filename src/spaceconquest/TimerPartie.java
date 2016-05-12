@@ -83,6 +83,10 @@ public class TimerPartie extends Timer {
          * Contient le plus court chemin des shadocks
          */
         private Dijkstra shadock;
+         
+       //Contient les positiosn des planèets 
+        int posLicoland;
+        int posShadockPlanete;
 
         //constructeur
         public TimerTaskPartie(Partie partie) {
@@ -91,10 +95,9 @@ public class TimerPartie extends Timer {
             shadock = new Dijkstra(partie.getCarte().getGrapheLicornes());
             cheminShadock = shadock.cheminShadock(partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY()), partie.getCarte().getSoleilInt());
 
-            int posVaisseauLicornes = partie.getCarte().getPosVaisseauInt(partie.getLicoShip());
-            int posVaisseauZombies = partie.getCarte().getPosVaisseauInt(partie.getZombificator());
-            int posLicoLand = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
-
+           posLicoland = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
+           posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY()); 
+            
         }
 
         private void majListePlanete() {
@@ -113,7 +116,7 @@ public class TimerPartie extends Timer {
         public int planeteProche() {
             this.majListePlanete();
             Dijkstra d = new Dijkstra(this.partie.getCarte().getGrapheLicornes());
-            d.plusCourtChemin(this.partie.getCarte().position(this.partie.getLicoShip().getPosition().getX(), this.partie.getLicoShip().getPosition().getY()), this.partie.getCarte().getSoleilInt());
+            d.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), this.partie.getCarte().getSoleilInt());
             int distanceMin = d.infini(); //la distance la plus courte est 0 pour commencer;
             int planete = -1;
             int _case = 0;
@@ -155,11 +158,11 @@ public class TimerPartie extends Timer {
 
                 boolean fini = false;
                 Couple caseActuelle = partie.getShadocks().getPosition();
-                int posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY());
+                
                 int posShadockVaisseau = partie.getCarte().getPosVaisseauInt(partie.getShadocks());
-                int posLicoland = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
+               
                 partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
-
+             
                 while (fini != true) {
                     randomGenerator = new Random();
                     int index = randomGenerator.nextInt(cheminShadock.size());
@@ -201,7 +204,10 @@ public class TimerPartie extends Timer {
 
             }
         }
-
+/**
+ * Méthode permettant de marquer la couleur de la case où se trouve le vaisseau
+ * @param c Position à colorier
+ */
         public void marquerCouleur(Couple c) {
             switch (this.partie.getTour()) {
                 case Licorne:
@@ -227,34 +233,51 @@ public class TimerPartie extends Timer {
                     this.partie.getShadocks().setPosition(prochaineCase);
             }
         }
-
+    /**
+     * Métthode permettant le déplacement des lciornes et des zombies
+     * @param graphe prend le graphe de la race correspondante
+     * @param v Le vaisseau actuelle
+     * @param cible L'objectif du vaisseau
+     */
         public void deplacement(Graphe graphe, Vaisseau v, int cible) {
+           
+            Couple caseActuelle = null;
             Dijkstra chemin = new Dijkstra(graphe);
-
-            if (SpaceConquest.getTour() == Race.Licorne) {
-                Dijkstra shad = new Dijkstra(graphe);
-
-                sommetInter = shad.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
-
+             
+             ArrayList<Integer> pcChemin;            
+                                    
+                if (SpaceConquest.getTour()==Race.Licorne){                    
+                     Dijkstra sha = new Dijkstra(graphe);                   
+            
+                
+                sommetInter=sha.antiShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt(), partie.getCarte().getPosVaisseauInt(partie.getLicoShip()),posLicoland,posShadockPlanete);
                 chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), partie.getCarte().getSoleilInt(), partie.getCarte().getPosVaisseauInt(partie.getZombificator()), sommetInter);
-
-            } else if (partie.getTour() == Race.Zombie) {
-                chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
-            } else {
-                chemin.afficheTableaux();;
-                ArrayList<Integer> pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
-                System.out.println("\n" + pcChemin);
-                Couple caseActuelle = partie.getCarte().getCouple(pcChemin.get(0), this.partie.getCarte().getTaille());
+                caseActuelle = partie.getCarte().getCouple(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), this.partie.getCarte().getTaille());
+                  pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);                         
+                                                                            
+                }else {
+                     
+               chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
+                caseActuelle = partie.getCarte().getCouple(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), this.partie.getCarte().getTaille());
+                pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
                 Couple prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
+              
+                    
+                    
+                }
+               
+              
+           Couple prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
 
-                this.marquerCouleur(caseActuelle);
+            this.marquerCouleur(caseActuelle);
 
-                this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
+            this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
 
-                this.deplacerVaisseau(prochaineCase);
-
+            this.deplacerVaisseau(prochaineCase);              
+             
+                
                 partie.refreshCarte();
-            }
+            
 
         }
 
