@@ -55,14 +55,14 @@ public class TimerPartie extends Timer {
          * licornes
          */
         private ArrayList<Integer> cheminLicornes;
-        
+
         /**
          * contient le chemin le plus court pour aller sur la planete des
          * licornes
          */
         private ArrayList<Integer> cheminShadocks;
-        
-          /**
+
+        /**
          * contient le chemin le plus court pour aller sur la planete des
          * licornes
          */
@@ -230,34 +230,31 @@ public class TimerPartie extends Timer {
 
         public void deplacement(Graphe graphe, Vaisseau v, int cible) {
             Dijkstra chemin = new Dijkstra(graphe);
-            
-            
-            if (SpaceConquest.getTour()==Race.Licorne){
+
+            if (SpaceConquest.getTour() == Race.Licorne) {
                 Dijkstra shad = new Dijkstra(graphe);
-               
-                sommetInter = shad.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()),partie.getCarte().getSoleilInt());
-                
-                
-                 chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()),partie.getCarte().getSoleilInt(),partie.getCarte().getPosVaisseauInt(partie.getZombificator()),sommetInter);
-                     
-                                 
-            }else{
+
+                sommetInter = shad.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
+
+                chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), partie.getCarte().getSoleilInt(), partie.getCarte().getPosVaisseauInt(partie.getZombificator()), sommetInter);
+
+            } else if (partie.getTour() == Race.Zombie) {
                 chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
+            } else {
+                chemin.afficheTableaux();;
+                ArrayList<Integer> pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
+                System.out.println("\n" + pcChemin);
+                Couple caseActuelle = partie.getCarte().getCouple(pcChemin.get(0), this.partie.getCarte().getTaille());
+                Couple prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
+
+                this.marquerCouleur(caseActuelle);
+
+                this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
+
+                this.deplacerVaisseau(prochaineCase);
+
+                partie.refreshCarte();
             }
-            chemin.afficheTableaux();;
-            ArrayList<Integer> pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
-            System.out.println("\n"+pcChemin);
-            Couple caseActuelle = partie.getCarte().getCouple(pcChemin.get(0), this.partie.getCarte().getTaille());
-            Couple prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
-
-            this.marquerCouleur(caseActuelle);
-
-            this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
-
-            this.deplacerVaisseau(prochaineCase);
-            
-            partie.refreshCarte();
-            
 
         }
 
@@ -284,7 +281,6 @@ public class TimerPartie extends Timer {
 
             }
 
-            
         }
 
     }
