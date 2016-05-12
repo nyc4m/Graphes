@@ -413,7 +413,7 @@ public class Carte {
         //On lance un Dijkstra à partir de la position
         if (SpaceConquest.getTour() == Race.Licorne) {
 
-            d.plusCourtChemin(position, this.getSoleilInt(), this.position(zombie.getX(), zombie.getY()));
+            d.plusCourtChemin(position, this.getSoleilInt(), this.position(zombie.getX(), zombie.getY()),null);
         } else {
             d.plusCourtChemin(position, this.getSoleilInt());
         }
