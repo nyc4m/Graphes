@@ -47,16 +47,6 @@ public class TimerPartie extends Timer {
         private Random randomGenerator;
 
         /**
-         * contient le chemin le plus court pour atteindre les licornes
-         */
-        private ArrayList<Integer> cheminZombies;
-        /**
-         * contient le chemin le plus court pour aller sur la planete des
-         * licornes
-         */
-        private ArrayList<Integer> cheminLicornes;
-
-        /**
          * contient le chemin le plus court pour aller sur la planete des
          * licornes
          */
@@ -68,25 +58,20 @@ public class TimerPartie extends Timer {
          */
         private ArrayList<Integer> sommetInter;
         /**
-         * Le numero du tour des licornes
-         */
-        private int numEtapeLicorne;
-        /**
-         * Contient le Dijkstra des licornes
-         */
-        private Dijkstra licorne;
-        /**
-         * Contient le plus court chemin des zombies
-         */
-        private Dijkstra zombie;
-        /**
          * Contient le plus court chemin des shadocks
          */
         private Dijkstra shadock;
          
-       //Contient les positiosn des planèets 
+       /**
+        * Contient le numero du sommet de la planete des licornes
+        */ 
         int posLicoland;
+        /**
+         * Contient le numero du sommet de la planete des shadocks
+         */
         int posShadockPlanete;
+        
+        private ArrayList<Integer> case_a_eviter;
 
         //constructeur
         public TimerTaskPartie(Partie partie) {
@@ -97,7 +82,32 @@ public class TimerPartie extends Timer {
 
            posLicoland = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
            posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY()); 
-            
+           this.case_a_eviter = new ArrayList();
+        }
+        /**
+         * Vide la liste des cases accessibles aux shadocks
+         * uniquement si la liste contient quelque chose
+         */
+        public void viderListeGibi(){
+            if(!this.case_a_eviter.isEmpty()){
+                this.case_a_eviter.clear();
+            }
+        }
+        
+        /**
+         * Stocke tout les sommets accessibles aux shadocks dans le but
+         * de les isoler des licornes
+         */
+        public void optiGibit(){
+            int _case = 0;
+            this.viderListeGibi();
+            for(int e : this.shadock.getDistances()){
+                if(e <= 2){
+                    this.case_a_eviter.add(_case);
+                }
+                
+                _case++;
+            }
         }
 
         private void majListePlanete() {
