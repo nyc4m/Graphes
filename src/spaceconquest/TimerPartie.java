@@ -70,6 +70,7 @@ public class TimerPartie extends Timer {
          * Contient le numero du sommet de la planete des shadocks
          */
         int posShadockPlanete;
+      
         
         private ArrayList<Integer> case_a_eviter;
 
@@ -99,16 +100,21 @@ public class TimerPartie extends Timer {
          * de les isoler des licornes
          */
         public void optiGibit(){
-            int _case = 0;
+            
             this.viderListeGibi();
-            for(int e : this.shadock.getDistances()){
-                if(e <= 2){
-                    this.case_a_eviter.add(_case);
+            System.out.println(posLicoland);
+            Dijkstra sha = new Dijkstra(partie.getCarte().getGrapheLicornes());
+            sha.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()),partie.getCarte().getSoleilInt());
+            for(int i=0;i<=sha.getSommets().size()-1;i++){
+                if(sha.getDistances().get(i) <= 2 && sha.getSommets().get(i) != partie.getCarte().getPosVaisseauInt(partie.getLicoShip()) && sha.getSommets().get(i) != posLicoland ){
+                    this.case_a_eviter.add(sha.getSommets().get(i));
                 }
-                
-                _case++;
             }
-        }
+                System.out.println(this.case_a_eviter);
+                
+            }
+          
+        
 
         private void majListePlanete() {
             Couple licorne = this.partie.getLicoShip().getPosition();
@@ -186,6 +192,7 @@ public class TimerPartie extends Timer {
                         Couple prochaineCase = partie.getCarte().getCouple(sommet, partie.getCarte().getTaille());
                         partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                         partie.getShadocks().setPosition(prochaineCase);
+                     
                         fini = true;
 
                     }
@@ -253,15 +260,14 @@ public class TimerPartie extends Timer {
            
             Couple caseActuelle = null;
             Dijkstra chemin = new Dijkstra(graphe);
-             
+             Couple prochaineCase;
              ArrayList<Integer> pcChemin;            
                                     
                 if (SpaceConquest.getTour()==Race.Licorne){                    
-                     Dijkstra sha = new Dijkstra(graphe);                   
+                                    
             
-                
-                sommetInter=sha.antiShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt(), partie.getCarte().getPosVaisseauInt(partie.getLicoShip()),posLicoland,posShadockPlanete);
-                chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), partie.getCarte().getSoleilInt(), partie.getCarte().getPosVaisseauInt(partie.getZombificator()), sommetInter);
+                this.optiGibit();                       
+                chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()),partie.getCarte().getSoleilInt(),partie.getCarte().getPosVaisseauInt(partie.getZombificator()),this.case_a_eviter);
                 caseActuelle = partie.getCarte().getCouple(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), this.partie.getCarte().getTaille());
                   pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);                         
                                                                             
@@ -270,22 +276,34 @@ public class TimerPartie extends Timer {
                chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
                 caseActuelle = partie.getCarte().getCouple(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), this.partie.getCarte().getTaille());
                 pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
-                Couple prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
+               
               
                     
                     
                 }
                
-              
-           Couple prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
+           if (pcChemin.size() ==1){   
+          prochaineCase = null;
+           } else {
+               prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
+           }
 
             this.marquerCouleur(caseActuelle);
 
             this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
 
-            this.deplacerVaisseau(prochaineCase);              
+            this.deplacerVaisseau(prochaineCase); 
+            
+            if(SpaceConquest.getTour()==Race.Licorne){
+               partie.getLicoShip().setPosition(prochaineCase); 
+            }else {
+            partie.getZombificator().setPosition(prochaineCase);
+        }
              
-                
+            
+            
+             
+               
                 partie.refreshCarte();
             
 

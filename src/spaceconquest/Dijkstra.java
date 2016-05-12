@@ -292,29 +292,6 @@ public class Dijkstra {
         }
         return res;
     }
-    /**
-     * Méthode permettant rester à distance du vaisseau shadock
-     * @param sommet Vaisseau shadock
-     * @param soleil Position du soleil
-     * @param vaisseauLic Position planéte Licorne
-     * @param licoLand Position planète Licoland
-     * @param shadockLand Position planète Shadock
-     * @return 
-     */
-        public ArrayList<Integer> antiShadock(int sommet, int soleil,int vaisseauLic,int licoLand,int shadockLand) {
-        ArrayList<Integer> res = new ArrayList();
-        this.plusCourtChemin(sommet, soleil);
-        for (int i = 1; i <= this.sommets.size() - 1; i++) {
-
-            if (this.distances.get(i) <= 2 && this.getSommets().get(i) != vaisseauLic && this.getSommets().get(i) != licoLand && this.getSommets().get(i) != shadockLand) {
-
-                res.add(i);
-            }
-
-        }
-        return res;
-    }
-
 
 
     /**
