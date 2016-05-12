@@ -38,12 +38,14 @@ public class SpaceConquest {
         
         partie.placerLicoShip(1, 2);
         partie.placerLicoLand(15, 3);
+        partie.placerLicoLand(4, 5);
         
-        partie.placerZombificator(1, 5);
+        partie.placerZombificator(15, 1);
         partie.getCarte().addObjetCeleste(new Etoile(), 3, 2);
         
-        partie.placerShadocksShip(10, 1);
+        partie.placerShadocksShip(8, 3);
         partie.placerShadocksLand(10, 2);
+        
 
         
         partie.start();

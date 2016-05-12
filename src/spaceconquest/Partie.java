@@ -158,7 +158,7 @@ public class Partie {
     public PlaneteShadocks getShadocksLand() {
         return ShadocksLand;
     }
-
+    
     public Vaisseau getShadocks() {
         return Shadocks;
     }

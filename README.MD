@@ -18,6 +18,8 @@ Dijkstra !!!
 
 Le mode manuel fonction désormais correctement
 
+Les licornes tentent de coloniser toutes les planètes de la carte, en commençant par la plus proche
+
 Quelques liens :
 ----------------
 [Git kraken](https://www.gitkraken.com/) pour voir les différentes branches du projet ;)
