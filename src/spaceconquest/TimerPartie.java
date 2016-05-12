@@ -234,8 +234,8 @@ public class TimerPartie extends Timer {
             
             if (SpaceConquest.getTour()==Race.Licorne){
                 Dijkstra shad = new Dijkstra(graphe);
-                shad.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
-                sommetInter = shad.construireChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()),partie.getCarte().getPosVaisseauInt(partie.getLicoShip()));
+               
+                sommetInter = shad.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()),partie.getCarte().getSoleilInt());
                 
                 
                  chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()),partie.getCarte().getSoleilInt(),partie.getCarte().getPosVaisseauInt(partie.getZombificator()),sommetInter);
