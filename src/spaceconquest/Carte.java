@@ -130,7 +130,7 @@ public class Carte {
         //On calcule le plus court chemin pour parcourir le graphe a partir de l'endroit cliqué
         if (SpaceConquest.getTour() == Race.Licorne) {
             d = new Dijkstra(this.getGrapheLicornes());
-            d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt());
+            d.plusCourtChemin(this.position(c.getX(), c.getY()), this.getSoleilInt(), this.position(zombie.getX(), zombie.getY()),null);
             d.getDistances().set(this.position(zombie.getX(), zombie.getY()), d.infini());
 
         } else {
