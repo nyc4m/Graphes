@@ -97,8 +97,11 @@ public class Dijkstra  {
         
     }
     
-    public void isolerZombie(int position){
-        this.mark.set(position, Boolean.TRUE);      
+    public void isolerZombie(int positionZ,int positionS,ArrayList<Integer> temp){
+        this.mark.set(positionZ, Boolean.TRUE);   
+        for(int i = 0;i<= temp.size()-1;i++) {
+        this.mark.set(temp.get(i), Boolean.TRUE);
+                }
         
     }
     
@@ -227,12 +230,14 @@ public class Dijkstra  {
         }
     }
     
+
+    
     /**
      * Methode principale permettant de calculer le plus court chemin pour les licornes.
      */
-    public void plusCourtChemin(int dep, int soleil,int isolement){
+    public void plusCourtChemin(int dep, int soleil,int positionZ,ArrayList<Integer> sommetShad){
         this.intitialisation(dep, soleil);
-        this.isolerZombie(isolement);
+        this.isolerZombie(positionZ,soleil,sommetShad);
         while(!this.listeTerminee()){
             int x = this.minDistance();
             this.mark.set(x, Boolean.TRUE);
@@ -259,7 +264,8 @@ public class Dijkstra  {
         }
         return res;
     }
-      
+    
+
       
     /**
      * Genere un tableau contenant "l'itineraire" le plus court pour aller de sommetDep a sommet

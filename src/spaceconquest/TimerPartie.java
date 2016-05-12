@@ -231,18 +231,15 @@ public class TimerPartie extends Timer {
         public void deplacement(Graphe graphe, Vaisseau v, int cible) {
             Dijkstra chemin = new Dijkstra(graphe);
             
-            if (SpaceConquest.getTour()==Race.Licorne){
-                 chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt(),partie.getCarte().getPosVaisseauInt(partie.getZombificator()));
             
-                     Dijkstra shad = new Dijkstra(graphe);
+            if (SpaceConquest.getTour()==Race.Licorne){
+                Dijkstra shad = new Dijkstra(graphe);
+                shad.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
+                sommetInter = shad.construireChemin(partie.getCarte().getPosVaisseauInt(partie.getShadocks()),partie.getCarte().getPosVaisseauInt(partie.getLicoShip()));
+                
+                
+                 chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()),partie.getCarte().getSoleilInt(),partie.getCarte().getPosVaisseauInt(partie.getZombificator()),sommetInter);
                      
-                sommetInter = shad.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
-                System.out.println(sommetInter);
-                for(int i = 1; i<= this.sommetInter.size();i++){                 
-                    
-                    chemin.getDistances().set(this.sommetInter.get(i-1), chemin.infini());
-                    
-                }
                                  
             }else{
                 chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
