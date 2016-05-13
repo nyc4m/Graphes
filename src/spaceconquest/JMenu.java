@@ -128,7 +128,7 @@ public class JMenu extends javax.swing.JFrame {
                 
                 // Permet de capter une action sur le button manuel et d'éxécuter le Main SpaceConquest en mode Manuel.
                 bManuel.addActionListener(new ActionListener() {
-
+                    private Partie partie;
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Execute when button is pressed
