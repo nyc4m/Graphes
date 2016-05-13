@@ -122,6 +122,7 @@ public class JMenu extends javax.swing.JFrame {
                     public void actionPerformed(ActionEvent e) {
                         //Execute when button is pressed
                         SpaceConquest.main(args);
+                        frame.dispose(); 
                     }
                 });
                 
@@ -145,6 +146,7 @@ public class JMenu extends javax.swing.JFrame {
                         partie.placerShadocksLand(10, 2);
                         partie.start();
                         */
+                        frame.dispose();
                     }
                 });
                 frame.setVisible(true);
