@@ -1,6 +1,5 @@
 package spaceconquest;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,11 +9,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.Action;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import spaceconquest.ObjetCeleste.Etoile;
+import spaceconquest.Parties.Mode;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
