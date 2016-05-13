@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import spaceconquest.ObjetCeleste.Asteroide;
 import spaceconquest.ObjetCeleste.Etoile;
 import spaceconquest.Parties.Mode;
 
@@ -117,12 +118,35 @@ public class JMenu extends javax.swing.JFrame {
 
                 // Permet de capter une action sur le button auto et d'éxécuter le Main SpaceConquest en mode Automatique.
                 bAuto.addActionListener(new ActionListener() {
-
+              private Partie partie;
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Execute when button is pressed
                         SpaceConquest.main(args);
-                        frame.dispose(); 
+                            partie = new Partie(5);
+
+
+
+        
+
+                     SpaceConquest.main(args);
+                        partie = new Partie(5);                    
+                         
+                                                
+                        
+                        partie.placerLicoShip(1, 2);
+                        partie.placerLicoLand(15, 3);
+
+                        partie.placerZombificator(1, 5);
+                        partie.getCarte().addObjetCeleste(new Etoile(), 3, 2);    
+                        partie.placerShadocksShip(8, 3);
+                        partie.placerShadocksLand(10, 2);
+                        
+
+                     partie.setMode(Mode.automatique);  
+                        partie.start();
+                        
+                        frame.dispose();
                     }
                 });
                 
@@ -132,20 +156,20 @@ public class JMenu extends javax.swing.JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Execute when button is pressed
-                        /* // GROS PROBLEME DE POINTEUR JE NE SAIS D'ou Sa vient cela devrait marcher pourtant.
-                        partie = new Partie(5);
-                        partie.setMode(Mode.manuel);
-
+                       SpaceConquest.main(args);
+                        partie = new Partie(5);                    
+                         
+                        partie.setMode(Mode.manuel);                            
+                        
                         partie.placerLicoShip(1, 2);
                         partie.placerLicoLand(15, 3);
 
                         partie.placerZombificator(1, 5);
                         partie.getCarte().addObjetCeleste(new Etoile(), 3, 2);
 
-                        partie.placerShadocksShip(10, 1);
-                        partie.placerShadocksLand(10, 2);
+                   
                         partie.start();
-                        */
+                        
                         frame.dispose();
                     }
                 });
