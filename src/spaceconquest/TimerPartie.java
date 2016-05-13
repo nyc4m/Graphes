@@ -61,17 +61,16 @@ public class TimerPartie extends Timer {
          * Contient le plus court chemin des shadocks
          */
         private Dijkstra shadock;
-         
-       /**
-        * Contient le numero du sommet de la planete des licornes
-        */ 
+
+        /**
+         * Contient le numero du sommet de la planete des licornes
+         */
         int posLicoland;
         /**
          * Contient le numero du sommet de la planete des shadocks
          */
         int posShadockPlanete;
-      
-        
+
         private ArrayList<Integer> case_a_eviter;
 
         //constructeur
@@ -81,40 +80,39 @@ public class TimerPartie extends Timer {
             shadock = new Dijkstra(partie.getCarte().getGrapheLicornes());
             cheminShadock = shadock.cheminShadock(partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY()), partie.getCarte().getSoleilInt());
 
-           posLicoland = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
-           posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY()); 
-           this.case_a_eviter = new ArrayList();
+            posLicoland = partie.getCarte().position(partie.getLicoLand().getPosition().getX(), partie.getLicoLand().getPosition().getY());
+            posShadockPlanete = partie.getCarte().position(partie.getShadocksLand().getPosition().getX(), partie.getShadocksLand().getPosition().getY());
+            this.case_a_eviter = new ArrayList();
         }
+
         /**
-         * Vide la liste des cases accessibles aux shadocks
-         * uniquement si la liste contient quelque chose
+         * Vide la liste des cases accessibles aux shadocks uniquement si la
+         * liste contient quelque chose
          */
-        public void viderListeGibi(){
-            if(!this.case_a_eviter.isEmpty()){
+        public void viderListeGibi() {
+            if (!this.case_a_eviter.isEmpty()) {
                 this.case_a_eviter.clear();
             }
         }
-        
+
         /**
-         * Stocke tout les sommets accessibles aux shadocks dans le but
-         * de les isoler des licornes
+         * Stocke tout les sommets accessibles aux shadocks dans le but de les
+         * isoler des licornes
          */
-        public void optiGibit(){
-            
+        public void optiGibit() {
+
             this.viderListeGibi();
             System.out.println(posLicoland);
             Dijkstra sha = new Dijkstra(partie.getCarte().getGrapheLicornes());
-            sha.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()),partie.getCarte().getSoleilInt());
-            for(int i=0;i<=sha.getSommets().size()-1;i++){
-                if(sha.getDistances().get(i) <= 2 && sha.getSommets().get(i) != partie.getCarte().getPosVaisseauInt(partie.getLicoShip()) && sha.getSommets().get(i) != posLicoland ){
+            sha.cheminShadock(partie.getCarte().getPosVaisseauInt(partie.getShadocks()), partie.getCarte().getSoleilInt());
+            for (int i = 0; i <= sha.getSommets().size() - 1; i++) {
+                if (sha.getDistances().get(i) <= 2 && sha.getSommets().get(i) != partie.getCarte().getPosVaisseauInt(partie.getLicoShip()) && sha.getSommets().get(i) != posLicoland) {
                     this.case_a_eviter.add(sha.getSommets().get(i));
                 }
             }
-                System.out.println(this.case_a_eviter);
-                
-            }
-          
-        
+            System.out.println(this.case_a_eviter);
+
+        }
 
         private void majListePlanete() {
             Couple licorne = this.partie.getLicoShip().getPosition();
@@ -174,11 +172,11 @@ public class TimerPartie extends Timer {
 
                 boolean fini = false;
                 Couple caseActuelle = partie.getShadocks().getPosition();
-                
+
                 int posShadockVaisseau = partie.getCarte().getPosVaisseauInt(partie.getShadocks());
-               
+
                 partie.getCarte().getCase(caseActuelle).setCouleur(Couleur.Rouge);
-             
+
                 while (fini != true) {
                     randomGenerator = new Random();
                     int index = randomGenerator.nextInt(cheminShadock.size());
@@ -192,7 +190,7 @@ public class TimerPartie extends Timer {
                         Couple prochaineCase = partie.getCarte().getCouple(sommet, partie.getCarte().getTaille());
                         partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
                         partie.getShadocks().setPosition(prochaineCase);
-                     
+
                         fini = true;
 
                     }
@@ -221,10 +219,13 @@ public class TimerPartie extends Timer {
 
             }
         }
-/**
- * Méthode permettant de marquer la couleur de la case où se trouve le vaisseau
- * @param c Position à colorier
- */
+
+        /**
+         * Méthode permettant de marquer la couleur de la case où se trouve le
+         * vaisseau
+         *
+         * @param c Position à colorier
+         */
         public void marquerCouleur(Couple c) {
             switch (this.partie.getTour()) {
                 case Licorne:
@@ -250,62 +251,55 @@ public class TimerPartie extends Timer {
                     this.partie.getShadocks().setPosition(prochaineCase);
             }
         }
-    /**
-     * Métthode permettant le déplacement des lciornes et des zombies
-     * @param graphe prend le graphe de la race correspondante
-     * @param v Le vaisseau actuelle
-     * @param cible L'objectif du vaisseau
-     */
+
+        /**
+         * Métthode permettant le déplacement des lciornes et des zombies
+         *
+         * @param graphe prend le graphe de la race correspondante
+         * @param v Le vaisseau actuelle
+         * @param cible L'objectif du vaisseau
+         */
         public void deplacement(Graphe graphe, Vaisseau v, int cible) {
-           
+
             Couple caseActuelle = null;
             Dijkstra chemin = new Dijkstra(graphe);
-             Couple prochaineCase;
-             ArrayList<Integer> pcChemin;            
-                                    
-                if (SpaceConquest.getTour()==Race.Licorne){                    
-                                    
-            
-                this.optiGibit();                       
-                chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()),partie.getCarte().getSoleilInt(),partie.getCarte().getPosVaisseauInt(partie.getZombificator()),this.case_a_eviter);
+            Couple prochaineCase;
+            ArrayList<Integer> pcChemin;
+
+            if (SpaceConquest.getTour() == Race.Licorne) {
+
+                this.optiGibit();
+                chemin.plusCourtChemin(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), partie.getCarte().getSoleilInt(), partie.getCarte().getPosVaisseauInt(partie.getZombificator()), this.case_a_eviter);
                 caseActuelle = partie.getCarte().getCouple(partie.getCarte().getPosVaisseauInt(partie.getLicoShip()), this.partie.getCarte().getTaille());
-                  pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);                         
-                                                                            
-                }else {
-                     
-               chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
+                pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
+
+            } else {
+
+                chemin.plusCourtChemin(this.partie.getCarte().getPosVaisseauInt(v), this.partie.getCarte().getSoleilInt());
                 caseActuelle = partie.getCarte().getCouple(partie.getCarte().getPosVaisseauInt(partie.getZombificator()), this.partie.getCarte().getTaille());
                 pcChemin = chemin.construireChemin(this.partie.getCarte().getPosVaisseauInt(v), cible);
-               
-              
-                    
-                    
-                }
-               
-           if (pcChemin.size() ==1){   
-          prochaineCase = null;
-           } else {
-               prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
-           }
+
+            }
+
+            if (pcChemin.size() == 1) {
+                prochaineCase = null;
+            } else {
+                prochaineCase = partie.getCarte().getCouple(pcChemin.get(1), this.partie.getCarte().getTaille());
+            }
 
             this.marquerCouleur(caseActuelle);
 
             this.partie.getCarte().BougerVaisseau(caseActuelle, prochaineCase);
 
-            this.deplacerVaisseau(prochaineCase); 
-            
-            if(SpaceConquest.getTour()==Race.Licorne){
-               partie.getLicoShip().setPosition(prochaineCase); 
-            }else {
-            partie.getZombificator().setPosition(prochaineCase);
-        }
-             
-            
-            
-             
-               
-                partie.refreshCarte();
-            
+            this.deplacerVaisseau(prochaineCase);
+
+            if (SpaceConquest.getTour() == Race.Licorne) {
+                partie.getLicoShip().setPosition(prochaineCase);
+            } else {
+                partie.getZombificator().setPosition(prochaineCase);
+            }
+
+            partie.refreshCarte();
 
         }
 
@@ -316,8 +310,12 @@ public class TimerPartie extends Timer {
             if (this.partie.getModeAuto() == true) {
 
                 int planete_la_plus_proche = this.planeteProche();
-                this.deplacement(this.partie.getCarte().getGrapheLicornes(), this.partie.getLicoShip(), planete_la_plus_proche);
-
+                if (planete_la_plus_proche != 0) {
+                    this.deplacement(this.partie.getCarte().getGrapheLicornes(), this.partie.getLicoShip(), planete_la_plus_proche);
+                }else{
+                    SpaceConquest.tourSuivant();
+                }
+                
                 if (this.partie.getCarte().getLicoLands().isEmpty()) {
                     stop();
                     System.out.println("Les licornes ont gagné.");
