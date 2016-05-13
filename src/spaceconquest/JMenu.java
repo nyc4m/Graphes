@@ -132,7 +132,20 @@ public class JMenu extends javax.swing.JFrame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //Execute when button is pressed
-                        //Mettre ici l'exécution en mode manuel
+                        /* // GROS PROBLEME DE POINTEUR JE NE SAIS D'ou Sa vient cela devrait marcher pourtant.
+                        partie = new Partie(5);
+                        partie.setMode(Mode.manuel);
+
+                        partie.placerLicoShip(1, 2);
+                        partie.placerLicoLand(15, 3);
+
+                        partie.placerZombificator(1, 5);
+                        partie.getCarte().addObjetCeleste(new Etoile(), 3, 2);
+
+                        partie.placerShadocksShip(10, 1);
+                        partie.placerShadocksLand(10, 2);
+                        partie.start();
+                        */
                     }
                 });
                 frame.setVisible(true);
