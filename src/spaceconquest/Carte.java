@@ -4,6 +4,8 @@
 package spaceconquest;
 
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import spaceconquest.Map.Case;
@@ -183,7 +185,7 @@ public class Carte {
 
                         this.getCase(c).setCouleur(Couleur.Rouge);
                         this.caseSelectionnee = c;
-                        this.colorationMouvement(d.getGraphe(), c);
+                        this.colorationMouvement(this.grapheLicornes, c);
                     }
                 }
             }
@@ -406,8 +408,8 @@ public class Carte {
      * @param v Représente le vaisseau
      */
     public void colorationMouvement(Graphe g, Couple v) {
-
         Dijkstra d = new Dijkstra(g);
+        
         // on récupère la position du vaisseau passé  en paramètre
         int position = this.position(v.getX(), v.getY());
         //On lance un Dijkstra à partir de la position
@@ -419,14 +421,16 @@ public class Carte {
         }
 
         //parcour du tableau des distances
-        for (int i = 1; i <= d.getDistances().size() - 1; i++) {
-            // Si la diastance est de 1 on colorie en vert
+        for (int i = 1; i <= d.getDistances().size()-1; i++) {
+            // Si la distance est de 1 on colorie en vert
             if (d.getDistances().get(i) == 1) {       // 1 point de déplacement
-                Couple c = new Couple(getCouple(i, this.taille).getX(), getCouple(i, this.taille).getY());
+                Couple c = this.getCouple(i, this.taille);
 
                 this.getCase(c).setCouleur(Couleur.Vert);
+                
+                System.out.println("c = " + c.toString());
             }
-            // Si la diastance est de 1 on colorie en jaune
+            // Si la distance est de 2 on colorie en jaune
             if (d.getDistances().get(i) == 2) // 2 points de déplacement
             {
                 Couple c = new Couple(getCouple(i, this.taille).getX(), getCouple(i, this.taille).getY());
@@ -435,6 +439,10 @@ public class Carte {
 
             }
 
+        }
+        
+        for(Couple e : this.asteroides){
+            System.out.println("Asteroides : " + e.toString());
         }
 
     }
