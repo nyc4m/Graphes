@@ -99,7 +99,7 @@ public class JMenu extends javax.swing.JFrame {
                     Logger.getLogger(JMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 Image contentPane = new Image(image);
-                JFrame frame = new JFrame();
+                final JFrame frame = new JFrame();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setContentPane(contentPane);
                 frame.setSize(1366, 768);
