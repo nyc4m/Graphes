@@ -32,7 +32,7 @@ public class SpaceConquest {
     public static void main(String[] args) {
         //on cree la partie
         partie = new Partie(5);         
-        partie.start();
+     
     }
 
 }

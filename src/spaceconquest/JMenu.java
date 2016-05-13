@@ -144,7 +144,8 @@ public class JMenu extends javax.swing.JFrame {
                         
 
                      partie.setMode(Mode.automatique);  
-                        partie.start();
+                      partie.start();
+                        
                         
                         frame.dispose();
                     }
@@ -167,8 +168,8 @@ public class JMenu extends javax.swing.JFrame {
                         partie.placerZombificator(1, 5);
                         partie.getCarte().addObjetCeleste(new Etoile(), 3, 2);
 
-                   
-                        partie.start();
+                       partie.start();
+                       
                         
                         frame.dispose();
                     }
